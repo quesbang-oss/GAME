@@ -641,12 +641,20 @@ export const scenario = [
   },
 
   // ── 第三章 ──
+  // ── 第三章　潜入作戦 ──
   {
     chapter: "第三章　潜入作戦",
     time: "13:00",
     background: ASSETS.backgrounds.manna_entrance,
     speaker: "ナレーション",
-    text: "二人はついに、ロケットを保有する超巨大企業『MANNA（マナ）』の本社ビル前へと辿り着いた。入り口には屈強な警備員が目を光らせている。"
+    text: "二人はついに、ロケットを保有する超巨大企業『MANNA（マナ）』の本社ビル前へと辿り着いた。入り口には屈強な警備員が数名、目を光らせている。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:02",
+    background: ASSETS.backgrounds.manna_entrance,
+    speaker: "リース",
+    text: "（……よし、予定通りに。アリー、合図したら動くぞ）"
   },
   {
     chapter: "第三章　潜入作戦",
@@ -665,8 +673,7 @@ export const scenario = [
     speaker: "警備員",
     text: "おいおい、何やってんだ学生さん。……ん？ なんだこの美味そうな匂いは……。",
     sprites: [
-      { id: "donuts", action: "update", position: "center" },
-      { id: "guard", name: "警備員", image: ASSETS.sprites.guard, position: "left", action: "enter" }
+      { id: "guard", name: "警備員", image: ASSETS.sprites.guard, position: "left", action: "enter", anim: "slideInLeft" }
     ]
   },
   {
@@ -676,9 +683,17 @@ export const scenario = [
     speaker: "アリー",
     text: "わあ……！ 一次球にはこんなに丸くて魅力的な食べ物があるのね……！",
     sprites: [
-      { id: "guard", action: "update", position: "left" },
-      { id: "donuts", action: "update", position: "center" },
-      { id: "ally", name: "アリー", image: ASSETS.sprites.ally_sparkle, position: "right", action: "enter", effect: "glow" }
+      { id: "ally", name: "アリー", image: ASSETS.sprites.ally_sparkle, position: "right", action: "enter", anim: "slideInRight", effect: "glow" }
+    ]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:05",
+    background: ASSETS.backgrounds.manna_entrance,
+    speaker: "リース",
+    text: "（待て待て待て！ なんでお前まで釣られてるんだよ！ 行くぞ！）",
+    sprites: [
+      { id: "ally", action: "update", effect: "shake" }
     ]
   },
   {
@@ -686,7 +701,7 @@ export const scenario = [
     time: "13:06",
     background: ASSETS.backgrounds.manna_entrance,
     speaker: "ナレーション",
-    text: "ドーナツに夢中になる警備員の隙をつき、リースはアリーの首根っこを掴んで強引に物陰へ引き込んだ。",
+    text: "ドーナツに夢中になる警備員の隙をつき、リースはアリーを連れ戻し、どうにかしてここで隠れれそうな場所を探した。",
     sprites: [
       { id: "donuts", action: "exit", anim: "fadeOut" },
       { id: "guard", action: "exit", anim: "fadeOut" },
@@ -695,22 +710,66 @@ export const scenario = [
   },
   {
     chapter: "第三章　潜入作戦",
+    time: "13:15",
+    background: ASSETS.backgrounds.manna_backyard,
+    speaker: "ナレーション",
+    text: "ここでよさそうな梯子があり、二人はそれをのぼり、上から探すことに。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:20",
+    background: ASSETS.backgrounds.manna_scaffold,
+    speaker: "リース",
+    text: "おそらくリースが目通しをしているところがプログラム室だろう。だが、特にお偉いさんのオフィスでなければ今回の計画は成功しない。",
+    sprites: [
+      { id: "ally", name: "アリー", image: ASSETS.sprites.ally, position: "right", action: "enter", anim: "fadeIn" }
+    ]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:22",
+    background: ASSETS.backgrounds.manna_scaffold,
+    speaker: "アリー",
+    text: "なら、私のエレメントの出番ね。……あまり見せたくはないのだけれど。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
     time: "13:23",
     background: ASSETS.backgrounds.manna_scaffold,
     speaker: "ナレーション",
-    text: "アリーの瞳に刻まれた五芒星が、妖しく輝き始める。彼女が持つエレメントは『服従』。",
+    text: "ここでアリーがエレメンターとしての力を使うことに。彼女は皇女らしい『服従』の力を有しているようで。",
     sprites: [
-      { id: "ally", name: "アリー", image: ASSETS.sprites.ally_element, position: "center", action: "enter", effect: "glow" }
+      { id: "ally", action: "update", image: ASSETS.sprites.ally_element, effect: "glow" }
+    ]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:24",
+    background: ASSETS.backgrounds.manna_scaffold,
+    speaker: "アリー",
+    text: "しかし、効果範囲は相当狭いし、相手を30秒ぐらい見ていないと発動しないらしいわ。……結構、忍耐が必要なのよ。",
+    sprites: [
+      { id: "ally", action: "update", effect: "none" }
+    ]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:40",
+    background: ASSETS.backgrounds.ceo_office,
+    speaker: "ナレーション",
+    text: "そして、社長のオフィスに来た。",
+    sprites: [
+      { id: "ally", action: "update", position: "center" }
     ]
   },
   {
     chapter: "第三章　潜入作戦",
     time: "13:42",
     background: ASSETS.backgrounds.ceo_office,
-    speaker: "アリー",
-    text: "ここが一次球の『しゃちょう』の部屋……。随分と成金趣味な内装ね。",
+    speaker: "ナレーション",
+    text: "あとは社長であるチャーハン・ボールマンを待つことに。",
     sprites: [
-      { id: "ally", action: "update", position: "right" } // 社長が入る場所を空けるために右へ移動
+      { id: "ally", action: "update", position: "right" } // 社長が入るスペースを空ける
     ]
   },
   {
@@ -720,7 +779,6 @@ export const scenario = [
     speaker: "チャーハン・ボールマン",
     text: "やあ。私のデスクに勝手に座っている不届き者は、君たちかな？",
     sprites: [
-      { id: "ally", action: "update", position: "right" },
       { id: "charhan", name: "チャーハン・ボールマン", image: ASSETS.sprites.charhan, position: "left", action: "enter", anim: "slideInLeft" }
     ]
   }
