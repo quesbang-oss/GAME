@@ -197,7 +197,15 @@ this.root.querySelector("#loadButton");
 
     this.chapter.textContent = node.chapter ?? "序章";
     this.clock.textContent = node.time ?? "";
-    this.background.dataset.scene = node.background ?? "default";
+    
+    // 修正：背景画像がある場合は直接スタイルを適用
+    if (node.background) {
+      if (node.background.includes("/")) {
+        this.background.style.backgroundImage = `url(${node.background})`;
+      } else {
+        this.background.dataset.scene = node.background; // 従来の文字列指定も一応残す
+      }
+    }
 
     if (node.setFlags) {
       Object.assign(this.state.flags, node.setFlags);
