@@ -128,7 +128,6 @@ this.root.querySelector("#saveGrid");
 
 this.closeSave =
 this.root.querySelector("#closeSave");
-  }
 this.saveButton =
 this.root.querySelector("#saveButton");
 
