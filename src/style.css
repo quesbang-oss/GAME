@@ -111,7 +111,8 @@ button {
   left: var(--sprite-x, 50%);
   transform: translateX(-50%);
   width: min(24vw, 300px);
-  aspect-ratio: 3 / 5;
+  /* ▼ 立ち絵プレースホルダーの高さはここだけを変えれば調整できます */
+  height: 420px;
   border: 1px solid rgba(255, 255, 255, .38);
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(110, 130, 175, .48), rgba(35, 42, 62, .55));
@@ -214,6 +215,8 @@ button {
   .sprite {
     bottom: 220px;
     width: min(34vw, 220px);
+    /* ▼ スマホ幅での高さはここ */
+    height: 300px;
   }
 }
 
