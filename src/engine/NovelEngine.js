@@ -58,11 +58,17 @@ export class NovelEngine {
     });
 
     // sprite id -> DOM要素。現在ステージに出ているキャラクターの管理台帳。
-    this.spriteEls = new Map();
+this.spriteEls = new Map();
 
-    this.renderShell();
+this.renderShell();
 this.bindEvents();
 this.bindSaveSystem();
+
+this.makeSaveSlots();
+
+this.closeSave.onclick = () => {
+  this.saveMenu.classList.add("hidden");
+};
   }
 
   renderShell() {
@@ -85,6 +91,16 @@ this.bindSaveSystem();
           </div>
 
           <div class="choices" id="choices"></div>
+          <div class="save-menu hidden" id="saveMenu">
+  <div class="save-title">セーブ</div>
+
+  <div class="save-grid" id="saveGrid">
+  </div>
+
+  <button id="closeSave">
+    閉じる
+  </button>
+</div>
         </section>
       </main>
     `;
@@ -99,6 +115,14 @@ this.bindSaveSystem();
     this.message = this.root.querySelector("#message");
     this.continueLabel = this.root.querySelector("#continue");
     this.choices = this.root.querySelector("#choices");
+    this.saveMenu =
+this.root.querySelector("#saveMenu");
+
+this.saveGrid =
+this.root.querySelector("#saveGrid");
+
+this.closeSave =
+this.root.querySelector("#closeSave");
   }
 
   bindEvents() {
@@ -116,11 +140,15 @@ this.bindSaveSystem();
   }
 
   start() {
-    this.index = 0;
-    this.spriteEls.forEach((el) => el.remove());
-    this.spriteEls.clear();
-    this.showCurrent();
-  }
+  this.index = 0;
+
+  this.spriteEls.forEach((el) => el.remove());
+  this.spriteEls.clear();
+
+  this.makeSaveSlots();
+
+  this.showCurrent();
+}
 
   // ラベル文字列 or 数値インデックスを、実際の配列インデックスに解決する。
   resolveIndex(target) {
@@ -292,56 +320,86 @@ this.bindSaveSystem();
     }
   }
 bindSaveSystem() {
-  window.addEventListener("keydown", (e) => {
 
-    if (e.key === "s" || e.key === "S") {
+  window.addEventListener("keydown",(e)=>{
+
+    if(e.key==="s"||e.key==="S"){
+
       e.preventDefault();
-      this.saveGame();
+
+      this.openSaveMenu();
+
     }
 
-    if (e.key === "l" || e.key === "L") {
+    if(e.key==="l"||e.key==="L"){
+
       e.preventDefault();
-      this.loadGame();
+
+      alert("ロード画面は次の修正で追加します");
+
     }
 
   });
+
+}
+makeSaveSlots(){
+
+  this.saveGrid.innerHTML="";
+
+  for(let i=0;i<12;i++){
+
+    const button=document.createElement("button");
+
+    button.className="save-slot";
+
+    button.dataset.slot=i;
+
+    const save=localStorage.getItem("save_"+i);
+
+    button.textContent=save ? "Save "+(i+1) : "空白";
+
+    button.onclick=()=>{
+
+      this.saveSlot(i);
+
+    };
+
+    this.saveGrid.appendChild(button);
+
+  }
+
 }
 
-saveGame() {
+openSaveMenu(){
 
-  const data = {
+  this.makeSaveSlots();
 
-    index: this.index,
+  this.saveMenu.classList.remove("hidden");
 
-    state: this.state
+}
+
+saveSlot(slot){
+
+  const data={
+
+    index:this.index,
+
+    state:this.state,
+
+    date:new Date().toLocaleString()
 
   };
 
   localStorage.setItem(
-    "novelSave",
+
+    "save_"+slot,
+
     JSON.stringify(data)
+
   );
 
-  alert("セーブしました");
-}
+  this.makeSaveSlots();
 
-loadGame() {
-
-  const raw = localStorage.getItem("novelSave");
-
-  if (!raw) {
-    alert("セーブデータがありません");
-    return;
-  }
-
-  const data = JSON.parse(raw);
-
-  this.index = data.index;
-  this.state = data.state;
-
-  this.showCurrent();
-
-  alert("ロードしました");
 }
   showEnding() {
     this.messagePanel.classList.add("is-ending");
