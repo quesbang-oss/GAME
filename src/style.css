@@ -105,28 +105,22 @@ button {
   pointer-events: none;
 }
 
+/* 画像があるスプライトの場合、中のテキストラベルを消す */
+.sprite--has-image .sprite-label {
+  display: none;
+}
+
 .sprite {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  width: 400px;  /* キャラクターの幅 */
+  height: 600px; /* キャラクターの高さ */
   position: absolute;
-  bottom: 190px;
-  left: var(--sprite-x, 50%);
+  bottom: 0;
+  left: var(--sprite-x);
   transform: translateX(-50%);
-  width: min(24vw, 300px);
-  /* ▼ 立ち絵プレースホルダーの高さはここだけを変えれば調整できます */
-  height: 420px;
-  border: 1px solid rgba(255, 255, 255, .38);
-  border-radius: 10px;
-  background: linear-gradient(180deg, rgba(110, 130, 175, .48), rgba(35, 42, 62, .55));
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, .4);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 18px;
-  opacity: .74;
-  filter: saturate(.9) brightness(1);
-  transition: opacity 220ms ease, filter 220ms ease;
+  pointer-events: none;
 }
 
 .sprite--has-image {
