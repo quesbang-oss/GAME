@@ -729,24 +729,25 @@ export const scenario = [
   },
   // ── 第二章　続き：渡航準備 ───────────────────────────────────
   {
-    chapter: "第二章　姉弟の対面",
+    id: "ch2-lab",
+    chapter: "第二章　渡航準備",
     time: "09:00",
     background: "lab",
     speaker: "葛城教授",
-    text: "……なるほど。事情は把握したわ。ロケットのあるアメリカへ行く必要があるけれど、問題は彼女のパスポートね。",
+    text: "……なるほど。事情は把握したわ。ロケットがある『MONA』へ行く必要があるけれど、問題は彼女のパスポートね。",
     sprites: [
       { id: "airi", name: "葛城愛莉", position: "left", action: "enter", anim: "slideInLeft" }
     ]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:05",
     background: "lab",
     speaker: "ナレーション",
     text: "教授は自作の『X線遮断素材』を取り出した。これでアリーを隠そうとしたが、念のためテストとして彼女をX線にかけてみると、奇妙なことが起きた。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:06",
     background: "lab",
     speaker: "ナレーション",
@@ -757,7 +758,7 @@ export const scenario = [
     ]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:07",
     background: "lab",
     speaker: "アリー",
@@ -767,117 +768,164 @@ export const scenario = [
     ]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:08",
     background: "lab",
     speaker: "ナレーション",
     text: "エレメンターはX線を通すと、その魂の形が直接写ってしまうらしい。魂の形は性質と似通うが、必ずしも性格と一致するわけではないようだ。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:10",
     background: "lab",
     speaker: "リース",
     text: "大丈夫だよ、アリー。……俺も試してみよう。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:11",
     background: "lab",
     speaker: "ナレーション",
     text: "人生初のX線。リースの体内にも、アリーと同じ位置に白い物体があった。だが、その形はアリーの石のような形とは違い、くっきりとした『十字』を刻んでいた。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:12",
     background: "lab",
     speaker: "葛城教授",
     text: "金属探知には引っかからないようね。アリー、あなたの世界にはこういう個体もいるの？"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "09:13",
     background: "lab",
     speaker: "アリー",
     text: "稀にだけど、魂を具現化すると金属に近い性質を持つエレメンターもいるわ。……でも、リースのはもっと純粋な「力」の結晶に見える。"
   },
 
-  // ── 空港・トランク作戦 ───────────────────────────────────
+  // ── 空港・トランク作戦（3択分岐） ──────────────────────────
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "15:40",
     background: "airport",
     speaker: "ナレーション",
-    text: "結局、アリーには申し訳ないが大型のトランクの中に入ってもらうことになった。いよいよ運命の手荷物検査室。"
+    text: "結局、アリーには申し訳ないが大型のトランクの中に入ってもらうことになった。いよいよMONA直通便の手荷物検査室。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "15:45",
     background: "airport",
     speaker: "空港係員",
     text: "おい、君。このトランクの反応は何だ？　中に大きな石のような塊が入っているようだが。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "15:46",
     background: "airport",
     speaker: "ナレーション",
     text: "X線モニターには、うずくまるアリーの魂が「白い岩」のように映っている。リースは焦りを抑えて答えた。",
     choices: [
-      { label: "最新式のポータブル蓄電池だよ", next: "airport-fail" },
-      { label: "市場で買った記念品の庭石だよ", next: "airport-success" }
+      { label: "市場で買った記念品の庭石だよ", next: "airport-success" },
+      { label: "最新式の超重量ポータブル蓄電池だよ", next: "end-detained-battery" },
+      { label: "実は、家出した妹が中に入ってて……", next: "end-detained-sister" }
     ]
   },
+
+  // ── ルート：連行エンド A（失敗） ──────────────────────────────
   {
-    id: "airport-fail",
-    chapter: "第二章　姉弟の対面",
+    id: "end-detained-battery",
+    chapter: "第二章　渡航準備",
     time: "15:47",
     background: "airport",
     speaker: "空港係員",
-    text: "蓄電池？　そんな形状のバッテリーがあるか。嘘をつくな、開けなさい！"
+    text: "蓄電池だと？　今のX線に映ったのは、どう見ても有機的な『塊』だったぞ。嘘をつくな、開けなさい！",
+    sprites: [{ id: "officer", name: "空港係員", position: "left", action: "enter", anim: "slideInLeft" }]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
+    time: "15:48",
+    background: "airport",
+    speaker: "ナレーション",
+    text: "無理やりトランクを開けられ、中から丸まったアリーが発見されてしまった。密航の疑いで、リースは即座に警備員に取り押さえられた。"
+  },
+  {
+    ending: true,
+    chapter: "連行エンド",
+    time: "――",
+    background: "prison",
+    speaker: "END ―― 連行エンド：密航未遂",
+    text: "厳しい取り調べが始まった。アリーはMONAの秘密研究機関へと連行され、リースの夏休みは冷たい檻の中で終わりを迎えた。"
+  },
+
+  // ── ルート：連行エンド B（失敗） ──────────────────────────────
+  {
+    id: "end-detained-sister",
+    chapter: "第二章　渡航準備",
+    time: "15:47",
+    background: "airport",
+    speaker: "空港係員",
+    text: "……冗談のつもりか？　もし本当なら誘拐か密入国の幇助だ。どちらにせよ、別室で詳しく話を聞かせてもらおうか。",
+    sprites: [{ id: "officer", name: "空港係員", position: "left", action: "enter", anim: "slideInLeft", effect: "shake" }]
+  },
+  {
+    chapter: "第二章　渡航準備",
     time: "15:48",
     background: "airport",
     speaker: "リース",
-    text: "あ、いや！　冗談です、実は……"
+    text: "あ、いや、今のはその……洒落というか……！"
   },
   {
+    chapter: "第二章　渡航準備",
+    time: "15:49",
+    background: "airport",
+    speaker: "ナレーション",
+    text: "必死の弁明も虚しく、リースは連行された。トランクの中のアリーも、そのまま没収されてしまう……。"
+  },
+  {
+    ending: true,
+    chapter: "連行エンド",
+    time: "――",
+    background: "prison",
+    speaker: "END ―― 連行エンド：不審者確定",
+    text: "空港のセキュリティを甘く見たのが運の尽きだった。リースの叫びは虚しく響き、二人の旅は空港のロビーで幕を閉じた。"
+  },
+
+  // ── ルート：成功（物語継続） ────────────────────────────────
+  {
     id: "airport-success",
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "15:50",
     background: "airport",
     speaker: "リース",
-    text: "市場で買った記念品の石だよ。ほら、この地域では珍しいって聞いたから。"
+    text: "市場で買った記念品の石だよ。ほら、この地域では珍しいって聞いたから、つい奮発しちゃって。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "15:51",
     background: "airport",
     speaker: "空港係員",
-    text: "ふん、物好きな学生だな……。よし、通れ。"
+    text: "ふん、物好きな学生だな……。超過料金は払ってあるか？ よし、通れ。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "19:00",
     background: "airplane",
     speaker: "ナレーション",
     text: "無事に機内へ。トランクの中でアリーは、魂を見られた恥ずかしさと、皇女を荷物扱いしたリースへの不満で悶絶していたという……。"
   },
 
-  // ── アメリカ到着・二つの領域 ───────────────────────────────
+  // ── MONA到着・二つの領域 ───────────────────────────────
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "08:30",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "ナレーション",
-    text: "アメリカに到着し、人通りのない場所でトランクを勢いよく開けた。だが、再会を喜ぶ間もなくアリーが悲鳴をあげる。"
+    text: "MONAに到着し、人通りのない場所でトランクを勢いよく開けた。だが、再会を喜ぶ間もなくアリーが悲鳴をあげる。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "08:31",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "アリー",
     text: "あ、うああっ……！　まぶし、い……っ！",
     sprites: [
@@ -885,16 +933,16 @@ export const scenario = [
     ]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "08:32",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "ナレーション",
     text: "それは以前倒したエレメンターが、懐中電灯の光を浴びた時と同じ苦しみ方だった。リースは慌てて彼女を日陰に運ぶ。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "08:35",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "アリー",
     text: "ごめんなさい、驚かせて……。似成球には二つの領域があるの。光の王国『プラーシュ』がある『光縁雲』と、私たちの故郷、暗闇の王国『アガルタ』がある『暗縁雲』……。",
     sprites: [
@@ -902,23 +950,23 @@ export const scenario = [
     ]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "08:36",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "アリー",
     text: "暗縁雲は光がほとんど届かない、永遠の夜。そこに住む私たちは、急激な強い光を受けると体が拒絶反応を起こしてしまうのよ。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "10:00",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "ナレーション",
-    text: "アメリカの強い日差しはアリーにとって猛毒だ。リースは急いでサングラスと日傘を調達した。アリーの白髪と相まって、不思議と様になっている。"
+    text: "MONAの強い日差しはアリーにとって猛毒だ。リースは急いでサングラスと日傘を調達した。アリーの白髪と相まって、不思議と様になっている。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "10:05",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "アリー",
     text: "ふふ、この『さんぐらす』というもの、暗縁雲のフィルターを通した景色みたいで素敵ね。気に入ったわ。",
     sprites: [
@@ -926,16 +974,16 @@ export const scenario = [
     ]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "10:06",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "リース",
     text: "気に入ってくれてよかった。ちょっとズレてるぞ、直してやるよ。"
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "10:07",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "アリー",
     text: "……っ！　触らないで。これはもう、私の一部なんだから。",
     sprites: [
@@ -944,10 +992,153 @@ export const scenario = [
     ]
   },
   {
-    chapter: "第二章　姉弟の対面",
+    chapter: "第二章　渡航準備",
     time: "10:08",
-    background: "usa_street",
+    background: "mona_street",
     speaker: "ナレーション",
     text: "リースがサングラスに手を伸ばすと、アリーはムスッとした表情で顔を背けた。ここ数日で彼女にできた、新しい「癖」だった。"
+  },
+  // ── 第三章　潜入、超巨大小惑星開発企業『MANNA』 ──────────────────────────────
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:00",
+    background: "manna_entrance",
+    speaker: "ナレーション",
+    text: "二人はついに、ロケットを保有する超巨大企業『MANNA（マナ）』の本社ビル前へと辿り着いた。入り口には屈強な警備員が目を光らせている。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:02",
+    background: "manna_entrance",
+    speaker: "リース",
+    text: "（……よし、予定通りに。アリー、合図したら動くぞ）"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:03",
+    background: "manna_entrance",
+    speaker: "ナレーション",
+    text: "リースは抱えていた大きな箱をわざとらしく落とした。中からは、甘い香りを放つ大量のドーナツが転がり出る。",
+    sprites: [{ id: "donuts", action: "enter", anim: "bounce" }]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:04",
+    background: "manna_entrance",
+    speaker: "警備員",
+    text: "おいおい、何やってんだ学生さん。……ん？ なんだこの美味そうな匂いは……。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:04",
+    background: "manna_entrance",
+    speaker: "アリー",
+    text: "わあ……！ 一次球にはこんなに丸くて魅力的な食べ物があるのね……！",
+    sprites: [
+      { id: "ally", name: "アリー", position: "right", action: "enter", anim: "slideInRight" },
+      { id: "ally", effect: "glow" }
+    ]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:05",
+    background: "manna_entrance",
+    speaker: "リース",
+    text: "（待て待て待て！ なんでお前まで釣られてるんだよ！ 行くぞ！）",
+    sprites: [{ id: "ally", effect: "shake" }]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:06",
+    background: "manna_entrance",
+    speaker: "ナレーション",
+    text: "ドーナツに夢中になる警備員の隙をつき、リースはアリーの首根っこを掴んで強引に物陰へ引き込んだ。"
+  },
+
+  // ── 内部潜入・高所探索 ───────────────────────────────
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:15",
+    background: "manna_backyard",
+    speaker: "ナレーション",
+    text: "建物の裏手へ回ると、上層階へ続く長い梯子を見つけた。二人はそれを一気に登り、社内を見渡せるキャットウォークへと滑り込む。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:20",
+    background: "manna_scaffold",
+    speaker: "リース",
+    text: "……あそこに見えるのはプログラム室だな。だが、ロケットの運用権限を奪うならもっと上の『お偉いさん』の部屋じゃないとダメだ。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:22",
+    background: "manna_scaffold",
+    speaker: "アリー",
+    text: "なら、私のエレメントの出番ね。……あまり見せたくはないのだけれど。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:23",
+    background: "manna_scaffold",
+    speaker: "ナレーション",
+    text: "アリーの瞳に刻まれた五芒星が、妖しく輝き始める。彼女が持つエレメントは『服従』。対象を強制的に跪かせる、アガルタ皇女の力。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:24",
+    background: "manna_scaffold",
+    speaker: "アリー",
+    text: "ただし、射程は数メートル。おまけに相手の目を30秒間じっと見つめ続けないと発動しないわ。……結構、忍耐が必要なのよ。",
+    sprites: [{ id: "ally", effect: "glow" }]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:25",
+    background: "manna_scaffold",
+    speaker: "リース",
+    text: "30秒か。……なんとか俺が時間を稼ぐしかないな。"
+  },
+
+  // ── 社長室 ───────────────────────────────
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:40",
+    background: "ceo_office",
+    speaker: "ナレーション",
+    text: "二人はついに、最上階にある重厚な扉を潜り抜けた。そこはMANNAの頂点、社長室。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:42",
+    background: "ceo_office",
+    speaker: "アリー",
+    text: "ここが一次球の『しゃちょう』の部屋……。随分と成金趣味な内装ね。",
+    sprites: [{ id: "ally", name: "アリー", position: "right", action: "enter", anim: "fadeIn" }]
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:45",
+    background: "ceo_office",
+    speaker: "リース",
+    text: "静かに。……足音がする。来るぞ。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:50",
+    background: "ceo_office",
+    speaker: "ナレーション",
+    text: "扉が開く。現れたのは、この巨大企業の主。あらゆる富と情報を握る男――チャーハン・ボールマン。"
+  },
+  {
+    chapter: "第三章　潜入作戦",
+    time: "13:51",
+    background: "ceo_office",
+    speaker: "チャーハン・ボールマン",
+    text: "やあ。私のデスクに勝手に座っている不届き者は、君たちかな？",
+    sprites: [
+      { id: "charhan", name: "チャーハン・ボールマン", position: "left", action: "enter", anim: "slideInLeft" }
+    ]
   }
+];
 ];
