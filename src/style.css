@@ -161,23 +161,23 @@ button {
 
 0%{
 opacity:0;
-transform:translate(-250px,40px) scale(.6) rotate(-6deg);
+transform:translateX(-100%) scale(.6) rotate(-6deg);
 filter:blur(10px);
 }
 
 60%{
 opacity:1;
-transform:translate(25px,-10px) scale(1.08);
+transform:translateX(10px) scale(1.08);
 filter:blur(0);
 }
 
 80%{
-transform:translate(-10px,5px) scale(.98);
+transform:translateX(-5px) scale(.98);
 }
 
 100%{
 opacity:1;
-transform:translate(0,0) scale(1);
+transform:translateX(0) scale(1);
 }
 
 }
@@ -186,23 +186,23 @@ transform:translate(0,0) scale(1);
 
 0%{
 opacity:0;
-transform:translate(250px,40px) scale(.6) rotate(6deg);
+transform:translateX(100%) scale(.6) rotate(6deg);
 filter:blur(10px);
 }
 
 60%{
 opacity:1;
-transform:translate(-25px,-10px) scale(1.08);
+transform:translateX(-10px) scale(1.08);
 filter:blur(0);
 }
 
 80%{
-transform:translate(10px,5px) scale(.98);
+transform:translateX(5px) scale(.98);
 }
 
 100%{
 opacity:1;
-transform:translate(0,0) scale(1);
+transform:translateX(0) scale(1);
 }
 
 }
