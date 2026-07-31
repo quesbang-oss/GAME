@@ -63,7 +63,8 @@ this.spriteEls = new Map();
 this.renderShell();
 this.bindEvents();
 this.bindSaveSystem();
-
+this.saveButton.onclick = () => this.saveGame();
+this.loadButton.onclick = () => this.loadGame();
 this.makeSaveSlots();
 
 this.closeSave.onclick = () => {
@@ -79,6 +80,10 @@ this.closeSave.onclick = () => {
           <div class="sprite-layer" id="spriteLayer"></div>
           <div class="overlay"></div>
           <div class="topbar">
+          <div class="mobile-buttons">
+  <button id="saveButton">SAVE</button>
+  <button id="loadButton">LOAD</button>
+</div>
             <span id="chapter"></span>
             <span id="clock"></span>
           </div>
@@ -124,7 +129,11 @@ this.root.querySelector("#saveGrid");
 this.closeSave =
 this.root.querySelector("#closeSave");
   }
+this.saveButton =
+this.root.querySelector("#saveButton");
 
+this.loadButton =
+this.root.querySelector("#loadButton");
   bindEvents() {
     this.root.addEventListener("click", (event) => {
       if (event.target.closest(".choice")) return;
