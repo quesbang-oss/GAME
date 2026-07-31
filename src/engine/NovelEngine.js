@@ -61,7 +61,8 @@ export class NovelEngine {
     this.spriteEls = new Map();
 
     this.renderShell();
-    this.bindEvents();
+this.bindEvents();
+this.bindSaveSystem();
   }
 
   renderShell() {
@@ -290,7 +291,58 @@ export class NovelEngine {
       el.classList.toggle("sprite--speaking", isSpeaking);
     }
   }
+bindSaveSystem() {
+  window.addEventListener("keydown", (e) => {
 
+    if (e.key === "s" || e.key === "S") {
+      e.preventDefault();
+      this.saveGame();
+    }
+
+    if (e.key === "l" || e.key === "L") {
+      e.preventDefault();
+      this.loadGame();
+    }
+
+  });
+}
+
+saveGame() {
+
+  const data = {
+
+    index: this.index,
+
+    state: this.state
+
+  };
+
+  localStorage.setItem(
+    "novelSave",
+    JSON.stringify(data)
+  );
+
+  alert("セーブしました");
+}
+
+loadGame() {
+
+  const raw = localStorage.getItem("novelSave");
+
+  if (!raw) {
+    alert("セーブデータがありません");
+    return;
+  }
+
+  const data = JSON.parse(raw);
+
+  this.index = data.index;
+  this.state = data.state;
+
+  this.showCurrent();
+
+  alert("ロードしました");
+}
   showEnding() {
     this.messagePanel.classList.add("is-ending");
     this.speaker.textContent = "END";
