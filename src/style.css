@@ -45,6 +45,7 @@ button {
 .background {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background:
     radial-gradient(circle at 50% 30%, rgba(90, 130, 180, 0.22), transparent 38%),
     linear-gradient(180deg, #172337 0%, #080c15 100%);
@@ -91,9 +92,133 @@ button {
     #2b2024;
 }
 
+/*
+ * 立ち絵レイヤー。
+ * 背景(z-index:0)より上、ビネット(.overlay)より下に配置している。
+ * 各キャラクターの水平位置は NovelEngine.js の POSITIONS を編集すれば
+ * 一括で調整できる（このCSS側は左右位置に触れる必要がない）。
+ */
+.sprite-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sprite {
+  position: absolute;
+  bottom: 190px;
+  left: var(--sprite-x, 50%);
+  transform: translateX(-50%);
+  width: min(24vw, 300px);
+  aspect-ratio: 3 / 5;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(60, 75, 110, .35), rgba(10, 13, 22, .55));
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, .4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: .58;
+  filter: saturate(.75) brightness(.82);
+  transition: opacity 220ms ease, filter 220ms ease;
+}
+
+.sprite--has-image {
+  background-color: transparent;
+}
+
+.sprite-label {
+  margin-bottom: 14px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(5, 8, 14, .68);
+  color: rgba(255, 255, 255, .82);
+  font-size: 13px;
+  letter-spacing: .06em;
+}
+
+/* 現在の発話者は明るく強調表示する（簡易なスポットライト表現） */
+.sprite--speaking {
+  opacity: 1;
+  filter: saturate(1) brightness(1.05);
+}
+
+.sprite--glow {
+  animation: glowPulse 1.6s ease-in-out infinite;
+}
+
+.sprite--shake {
+  animation: shakeEmphasis 420ms ease;
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(calc(-50% - 90px)); }
+  to   { opacity: 1; transform: translateX(-50%); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(calc(-50% + 90px)); }
+  to   { opacity: 1; transform: translateX(-50%); }
+}
+
+@keyframes slideOutLeft {
+  from { opacity: 1; transform: translateX(-50%); }
+  to   { opacity: 0; transform: translateX(calc(-50% - 90px)); }
+}
+
+@keyframes slideOutRight {
+  from { opacity: 1; transform: translateX(-50%); }
+  to   { opacity: 0; transform: translateX(calc(-50% + 90px)); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(36px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes popIn {
+  0%   { opacity: 0; transform: translateX(-50%) scale(.7); }
+  70%  { opacity: 1; transform: translateX(-50%) scale(1.06); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes shakeEmphasis {
+  0%, 100% { transform: translateX(-50%); }
+  20%      { transform: translateX(calc(-50% - 8px)); }
+  40%      { transform: translateX(calc(-50% + 8px)); }
+  60%      { transform: translateX(calc(-50% - 5px)); }
+  80%      { transform: translateX(calc(-50% + 5px)); }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 20px 45px rgba(0, 0, 0, .4), 0 0 0 rgba(190, 210, 255, 0); }
+  50%      { box-shadow: 0 20px 45px rgba(0, 0, 0, .4), 0 0 34px rgba(190, 210, 255, .55); }
+}
+
+@media (max-width: 700px) {
+  .sprite {
+    bottom: 220px;
+    width: min(34vw, 220px);
+  }
+}
+
 .overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   pointer-events: none;
   background:
     linear-gradient(90deg, rgba(0,0,0,.35), transparent 30%, transparent 70%, rgba(0,0,0,.35)),
@@ -146,6 +271,19 @@ button {
   border-left: 3px solid rgba(160, 190, 255, .8);
   color: #dbe7ff;
   font-weight: 700;
+}
+
+/* エンディングノード表示時の見た目（進行不可であることが分かるように） */
+.message-panel.is-ending {
+  cursor: default;
+  border-color: rgba(255, 210, 150, .45);
+  background: rgba(10, 8, 6, .86);
+}
+
+.message-panel.is-ending .speaker {
+  border-left-color: rgba(255, 210, 150, .9);
+  color: #ffe9c9;
+  letter-spacing: .08em;
 }
 
 .message {
