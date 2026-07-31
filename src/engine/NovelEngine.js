@@ -133,6 +133,7 @@ this.root.querySelector("#saveButton");
 
 this.loadButton =
 this.root.querySelector("#loadButton");
+  }
   bindEvents() {
     this.root.addEventListener("click", (event) => {
       if (event.target.closest(".choice")) return;
