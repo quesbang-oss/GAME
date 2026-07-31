@@ -112,17 +112,19 @@ button {
   transform: translateX(-50%);
   width: min(24vw, 300px);
   aspect-ratio: 3 / 5;
-  border: 1px solid rgba(255, 255, 255, .28);
+  border: 1px solid rgba(255, 255, 255, .38);
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(60, 75, 110, .35), rgba(10, 13, 22, .55));
+  background: linear-gradient(180deg, rgba(110, 130, 175, .48), rgba(35, 42, 62, .55));
   background-size: cover;
   background-position: center;
   box-shadow: 0 20px 45px rgba(0, 0, 0, .4);
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  opacity: .58;
-  filter: saturate(.75) brightness(.82);
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 18px;
+  opacity: .74;
+  filter: saturate(.9) brightness(1);
   transition: opacity 220ms ease, filter 220ms ease;
 }
 
@@ -131,7 +133,7 @@ button {
 }
 
 .sprite-label {
-  margin-bottom: 14px;
+  margin-bottom: 0;
   padding: 4px 12px;
   border-radius: 999px;
   background: rgba(5, 8, 14, .68);
@@ -143,7 +145,7 @@ button {
 /* 現在の発話者は明るく強調表示する（簡易なスポットライト表現） */
 .sprite--speaking {
   opacity: 1;
-  filter: saturate(1) brightness(1.05);
+  filter: saturate(1.05) brightness(1.12);
 }
 
 .sprite--glow {
