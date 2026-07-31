@@ -727,4 +727,228 @@ export const scenario = [
     text:
       "三人と一台のロケット――夏期休暇は、思わぬ形で幕を開けようとしていた。"
   }
+  // ── 第二章　続き：渡航準備 ───────────────────────────────────
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:00",
+    background: "lab",
+    speaker: "葛城教授",
+    text: "……なるほど。事情は把握したわ。ロケットのあるアメリカへ行く必要があるけれど、問題は彼女のパスポートね。",
+    sprites: [
+      { id: "airi", name: "葛城愛莉", position: "left", action: "enter", anim: "slideInLeft" }
+    ]
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:05",
+    background: "lab",
+    speaker: "ナレーション",
+    text: "教授は自作の『X線遮断素材』を取り出した。これでアリーを隠そうとしたが、念のためテストとして彼女をX線にかけてみると、奇妙なことが起きた。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:06",
+    background: "lab",
+    speaker: "ナレーション",
+    text: "モニターに映し出されたのは、人間の骨格ではない。透き通った体の中に、白く発光する石のような「形」だけが浮かび上がっていた。",
+    sprites: [
+      { id: "ally", name: "アリー", position: "right", action: "enter", anim: "fadeIn" },
+      { id: "ally", effect: "glow" }
+    ]
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:07",
+    background: "lab",
+    speaker: "アリー",
+    text: "……っ、あんまり見ないで。なんだか、中身を全部引きずり出されたみたいで恥ずかしいわ……。",
+    sprites: [
+      { id: "ally", effect: "shake" }
+    ]
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:08",
+    background: "lab",
+    speaker: "ナレーション",
+    text: "エレメンターはX線を通すと、その魂の形が直接写ってしまうらしい。魂の形は性質と似通うが、必ずしも性格と一致するわけではないようだ。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:10",
+    background: "lab",
+    speaker: "リース",
+    text: "大丈夫だよ、アリー。……俺も試してみよう。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:11",
+    background: "lab",
+    speaker: "ナレーション",
+    text: "人生初のX線。リースの体内にも、アリーと同じ位置に白い物体があった。だが、その形はアリーの石のような形とは違い、くっきりとした『十字』を刻んでいた。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:12",
+    background: "lab",
+    speaker: "葛城教授",
+    text: "金属探知には引っかからないようね。アリー、あなたの世界にはこういう個体もいるの？"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "09:13",
+    background: "lab",
+    speaker: "アリー",
+    text: "稀にだけど、魂を具現化すると金属に近い性質を持つエレメンターもいるわ。……でも、リースのはもっと純粋な「力」の結晶に見える。"
+  },
+
+  // ── 空港・トランク作戦 ───────────────────────────────────
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "15:40",
+    background: "airport",
+    speaker: "ナレーション",
+    text: "結局、アリーには申し訳ないが大型のトランクの中に入ってもらうことになった。いよいよ運命の手荷物検査室。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "15:45",
+    background: "airport",
+    speaker: "空港係員",
+    text: "おい、君。このトランクの反応は何だ？　中に大きな石のような塊が入っているようだが。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "15:46",
+    background: "airport",
+    speaker: "ナレーション",
+    text: "X線モニターには、うずくまるアリーの魂が「白い岩」のように映っている。リースは焦りを抑えて答えた。",
+    choices: [
+      { label: "最新式のポータブル蓄電池だよ", next: "airport-fail" },
+      { label: "市場で買った記念品の庭石だよ", next: "airport-success" }
+    ]
+  },
+  {
+    id: "airport-fail",
+    chapter: "第二章　姉弟の対面",
+    time: "15:47",
+    background: "airport",
+    speaker: "空港係員",
+    text: "蓄電池？　そんな形状のバッテリーがあるか。嘘をつくな、開けなさい！"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "15:48",
+    background: "airport",
+    speaker: "リース",
+    text: "あ、いや！　冗談です、実は……"
+  },
+  {
+    id: "airport-success",
+    chapter: "第二章　姉弟の対面",
+    time: "15:50",
+    background: "airport",
+    speaker: "リース",
+    text: "市場で買った記念品の石だよ。ほら、この地域では珍しいって聞いたから。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "15:51",
+    background: "airport",
+    speaker: "空港係員",
+    text: "ふん、物好きな学生だな……。よし、通れ。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "19:00",
+    background: "airplane",
+    speaker: "ナレーション",
+    text: "無事に機内へ。トランクの中でアリーは、魂を見られた恥ずかしさと、皇女を荷物扱いしたリースへの不満で悶絶していたという……。"
+  },
+
+  // ── アメリカ到着・二つの領域 ───────────────────────────────
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "08:30",
+    background: "usa_street",
+    speaker: "ナレーション",
+    text: "アメリカに到着し、人通りのない場所でトランクを勢いよく開けた。だが、再会を喜ぶ間もなくアリーが悲鳴をあげる。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "08:31",
+    background: "usa_street",
+    speaker: "アリー",
+    text: "あ、うああっ……！　まぶし、い……っ！",
+    sprites: [
+      { id: "ally", effect: "shake", anim: "bounce" }
+    ]
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "08:32",
+    background: "usa_street",
+    speaker: "ナレーション",
+    text: "それは以前倒したエレメンターが、懐中電灯の光を浴びた時と同じ苦しみ方だった。リースは慌てて彼女を日陰に運ぶ。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "08:35",
+    background: "usa_street",
+    speaker: "アリー",
+    text: "ごめんなさい、驚かせて……。似成球には二つの領域があるの。光の王国『プラーシュ』がある『光縁雲』と、私たちの故郷、暗闇の王国『アガルタ』がある『暗縁雲』……。",
+    sprites: [
+      { id: "ally", effect: "none", anim: "fadeIn" }
+    ]
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "08:36",
+    background: "usa_street",
+    speaker: "アリー",
+    text: "暗縁雲は光がほとんど届かない、永遠の夜。そこに住む私たちは、急激な強い光を受けると体が拒絶反応を起こしてしまうのよ。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "10:00",
+    background: "usa_street",
+    speaker: "ナレーション",
+    text: "アメリカの強い日差しはアリーにとって猛毒だ。リースは急いでサングラスと日傘を調達した。アリーの白髪と相まって、不思議と様になっている。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "10:05",
+    background: "usa_street",
+    speaker: "アリー",
+    text: "ふふ、この『さんぐらす』というもの、暗縁雲のフィルターを通した景色みたいで素敵ね。気に入ったわ。",
+    sprites: [
+      { id: "ally", effect: "glow", anim: "slideInRight" }
+    ]
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "10:06",
+    background: "usa_street",
+    speaker: "リース",
+    text: "気に入ってくれてよかった。ちょっとズレてるぞ、直してやるよ。"
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "10:07",
+    background: "usa_street",
+    speaker: "アリー",
+    text: "……っ！　触らないで。これはもう、私の一部なんだから。",
+    sprites: [
+      { id: "ally", name: "アリー", action: "enter", anim: "slideInRight" },
+      { id: "ally", effect: "shake" }
+    ]
+  },
+  {
+    chapter: "第二章　姉弟の対面",
+    time: "10:08",
+    background: "usa_street",
+    speaker: "ナレーション",
+    text: "リースがサングラスに手を伸ばすと、アリーはムスッとした表情で顔を背けた。ここ数日で彼女にできた、新しい「癖」だった。"
+  }
+];
 ];
