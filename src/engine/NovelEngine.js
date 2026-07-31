@@ -284,6 +284,7 @@ this.root.querySelector("#loadButton");
 
       let el = this.spriteEls.get(id);
 
+      // --- 退場処理 ---
       if (action === "exit") {
         if (el) {
           const outAnim = anim && ANIMATIONS.exit.includes(anim) ? anim : DEFAULT_EXIT_ANIM;
@@ -295,10 +296,12 @@ this.root.querySelector("#loadButton");
         continue;
       }
 
+      // --- 登場・更新処理 ---
       if (!el) {
         el = document.createElement("div");
         el.className = "sprite";
         el.dataset.id = id;
+        // 最初は必ず仮のラベルを入れておく
         el.innerHTML = `<span class="sprite-label">${name ?? id}</span>`;
         this.spriteLayer.appendChild(el);
         this.spriteEls.set(id, el);
@@ -306,20 +309,37 @@ this.root.querySelector("#loadButton");
         const inAnim = anim && ANIMATIONS.enter.includes(anim) ? anim : DEFAULT_ENTER_ANIM;
         el.style.animation = `${inAnim} 620ms ease forwards`;
       } else if (anim) {
-        // 既に登場済みのキャラに再度アニメーションを指定した場合
-        // （位置移動や強い感情表現の演出などに使う）。
         el.style.animation = "none";
-        void el.offsetWidth; // reflow でアニメーションを再トリガー
+        void el.offsetWidth;
         el.style.animation = `${anim} 500ms ease`;
       }
 
       el.style.setProperty("--sprite-x", POSITIONS[position] ?? POSITIONS.center);
 
+      // --- 画像の読み込みチェック ---
       if (image) {
-        el.style.backgroundImage = `url(${image})`;
-        el.classList.add("sprite--has-image");
+        const tempImg = new Image();
+        tempImg.src = image;
+
+        // 画像が存在した場合のみ立ち絵モードにする
+        tempImg.onload = () => {
+          el.style.backgroundImage = `url(${image})`;
+          el.classList.add("sprite--has-image"); // これでラベルを隠す
+        };
+
+        // 画像がない、またはエラーの場合は仮の姿を維持する
+        tempImg.onerror = () => {
+          console.warn(`[Asset Missing] ${image} が見つかりません。仮の立ち絵を表示します。`);
+          el.style.backgroundImage = "none";
+          el.classList.remove("sprite--has-image"); // ラベルを再表示
+        };
+      } else {
+        // そもそも image の指定がない場合
+        el.style.backgroundImage = "none";
+        el.classList.remove("sprite--has-image");
       }
 
+      // エフェクト処理
       if (effect === "glow") {
         el.classList.add("sprite--glow");
       } else if (effect === "shake") {
@@ -329,7 +349,7 @@ this.root.querySelector("#loadButton");
       }
     }
 
-    // 現在の発話者に対応する立ち絵をハイライトする（簡易な話者強調）。
+    // 話者強調
     for (const [, el] of this.spriteEls) {
       const label = el.querySelector(".sprite-label")?.textContent;
       const isSpeaking = Boolean(node.speaker) && label === node.speaker;
