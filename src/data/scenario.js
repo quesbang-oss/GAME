@@ -3,7 +3,41 @@
  * 文章・背景・時刻・フラグをコード本体から分離しています。
  * 後から章ごとのJSON化や分岐管理へ拡張できます。
  */
-
+// すべての画像パスを一括管理
+const ASSETS = {
+  backgrounds: {
+    world: "images/bg/world_map.jpg",
+    academy: "images/bg/academy_morning.jpg",
+    news: "images/bg/news_studio.jpg",
+    street: "images/bg/night_street.jpg",
+    memory: "images/bg/memory_blur.jpg",
+    awakening: "images/bg/awakening_light.jpg",
+    battle: "images/bg/battle_effect.jpg",
+    home: "images/bg/living_room.jpg",
+    room: "images/bg/leith_room.jpg",
+    lab: "images/bg/airi_lab.jpg",
+    airport: "images/bg/mona_airport.jpg",
+    airplane: "images/bg/airplane_inside.jpg",
+    mona_street: "images/bg/mona_sunny.jpg",
+    manna_entrance: "images/bg/manna_gate.jpg",
+    manna_backyard: "images/bg/manna_back.jpg",
+    manna_scaffold: "images/bg/manna_high.jpg",
+    ceo_office: "images/bg/ceo_room.jpg",
+    prison: "images/bg/prison.jpg"
+  },
+  sprites: {
+    elementer: "images/sprites/elementer_shadow.png",
+    emma: "images/sprites/emma_uniform.png",
+    ally: "images/sprites/ally_normal.png",
+    ally_sparkle: "images/sprites/ally_happy.png",
+    ally_element: "images/sprites/ally_command.png",
+    airi: "images/sprites/airi_prof.png",
+    officer: "images/sprites/mona_guard.png",
+    donuts: "images/sprites/donuts_box.png",
+    guard: "images/sprites/manna_security.png",
+    charhan: "images/sprites/charhan_suit.png"
+  }
+};
 export const scenario = [
   {
     chapter: "世界設定",
