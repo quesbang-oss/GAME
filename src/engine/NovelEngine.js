@@ -356,7 +356,39 @@ makeSaveSlots(){
 
     const save=localStorage.getItem("save_"+i);
 
-    button.textContent=save ? "Save "+(i+1) : "空白";
+    if(save){
+
+    const data=JSON.parse(save);
+
+    button.innerHTML=`
+
+    <div style="font-size:18px;font-weight:bold;">
+    Save ${i+1}
+    </div>
+
+    <div style="font-size:15px;margin-top:8px;">
+    ${data.chapter}
+    </div>
+
+    <div style="font-size:14px;">
+    ${data.time}
+    </div>
+
+    <div style="font-size:14px;">
+    ${data.speaker}
+    </div>
+
+    <div style="font-size:12px;margin-top:10px;opacity:.7;">
+    ${data.date}
+    </div>
+
+    `;
+
+}else{
+
+    button.textContent="空白";
+
+}
 
     button.onclick=()=>{
 
@@ -378,30 +410,38 @@ openSaveMenu(){
 
 }
 
-saveSlot(slot){
+saveSlot(slot) {
 
-  const data={
+    const node = this.scenario[this.index];
 
-    index:this.index,
+    const data = {
 
-    state:this.state,
+        index: this.index,
 
-    date:new Date().toLocaleString()
+        state: this.state,
 
-  };
+        chapter: node.chapter ?? "序章",
 
-  localStorage.setItem(
+        time: node.time ?? "",
 
-    "save_"+slot,
+        speaker: node.speaker ?? "",
 
-    JSON.stringify(data)
+        date: new Date().toLocaleString()
 
-  );
+    };
 
-  this.makeSaveSlots();
+    localStorage.setItem(
+
+        "save_" + slot,
+
+        JSON.stringify(data)
+
+    );
+
+    this.makeSaveSlots();
 
 }
-  openLoadMenu() {
+openLoadMenu() {
 
   this.makeLoadSlots();
 
