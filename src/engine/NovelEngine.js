@@ -331,13 +331,13 @@ bindSaveSystem() {
 
     }
 
-    if(e.key==="l"||e.key==="L"){
+    if (e.key === "l" || e.key === "L") {
 
-      e.preventDefault();
+    e.preventDefault();
 
-      alert("ロード画面は次の修正で追加します");
+    this.openLoadMenu();
 
-    }
+}
 
   });
 
@@ -399,6 +399,69 @@ saveSlot(slot){
   );
 
   this.makeSaveSlots();
+
+}
+  openLoadMenu() {
+
+  this.makeLoadSlots();
+
+  this.saveMenu.classList.remove("hidden");
+
+}
+
+makeLoadSlots() {
+
+  this.saveGrid.innerHTML = "";
+
+  for (let i = 0; i < 12; i++) {
+
+    const button = document.createElement("button");
+
+    button.className = "save-slot";
+
+    const save = localStorage.getItem("save_" + i);
+
+    if (!save) {
+
+      button.textContent = "空白";
+      button.disabled = true;
+
+    } else {
+
+      const data = JSON.parse(save);
+
+      button.innerHTML =
+        "<strong>Save " + (i + 1) + "</strong><br>" +
+        data.date;
+
+      button.onclick = () => {
+
+        this.loadSlot(i);
+
+      };
+
+    }
+
+    this.saveGrid.appendChild(button);
+
+  }
+
+}
+  loadSlot(slot) {
+
+  const raw = localStorage.getItem("save_" + slot);
+
+  if (!raw) return;
+
+  const data = JSON.parse(raw);
+
+  this.index = data.index;
+
+  this.state = data.state;
+
+  this.saveMenu.classList.add("hidden");
+
+  this.showCurrent();
 
 }
   showEnding() {
