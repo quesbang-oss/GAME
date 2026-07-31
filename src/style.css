@@ -489,3 +489,41 @@ font-size:20px;
 cursor:pointer;
 
 }
+.mobile-buttons{
+position:absolute;
+top:18px;
+right:18px;
+display:flex;
+gap:10px;
+z-index:9999;
+}
+
+.mobile-buttons button{
+padding:10px 20px;
+border:none;
+border-radius:12px;
+background:#2f6bff;
+color:white;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+transition:.2s;
+}
+
+.mobile-buttons button:hover{
+transform:scale(1.05);
+}
+
+.mobile-buttons button:active{
+transform:scale(.95);
+}
+@media (max-width:768px){
+
+.mobile-buttons button{
+
+padding:14px 26px;
+font-size:18px;
+
+}
+
+}
