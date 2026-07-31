@@ -470,9 +470,29 @@ makeLoadSlots() {
 
       const data = JSON.parse(save);
 
-      button.innerHTML =
-        "<strong>Save " + (i + 1) + "</strong><br>" +
-        data.date;
+      button.innerHTML=`
+
+<div style="font-size:18px;font-weight:bold;">
+Save ${i+1}
+</div>
+
+<div style="font-size:15px;margin-top:8px;">
+${data.chapter}
+</div>
+
+<div style="font-size:14px;">
+${data.time}
+</div>
+
+<div style="font-size:14px;">
+${data.speaker}
+</div>
+
+<div style="font-size:12px;margin-top:10px;opacity:.7;">
+${data.date}
+</div>
+
+`;
 
       button.onclick = () => {
 
