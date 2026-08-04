@@ -6,50 +6,46 @@
 // すべての画像パスを一括管理
 const ASSETS = {
   backgrounds: {
-    // 全てのパスの先頭に public/ を追加
-    world: "public/images/bg/world_map.jpg",
-    academy: "public/images/bg/academy_morning.jpg",
-    news: "public/images/bg/news_studio.jpg",
-    street: "public/images/bg/night_street.jpg",
-    memory: "public/images/bg/memory_blur.jpg",
-    awakening: "public/images/bg/awakening_light.jpg",
-    battle: "public/images/bg/battle_effect.jpg",
-    home: "public/images/bg/living_room.jpg",
-    room: "public/images/bg/leith_room.jpg",
-    lab: "public/images/bg/airi_lab.jpg",
-    airport: "public/images/bg/mona_airport.jpg",
-    airplane: "public/images/bg/airplane_inside.jpg",
-    mona_street: "public/images/bg/mona_sunny.jpg",
-    manna_entrance: "public/images/bg/manna_gate.jpg",
-    manna_backyard: "public/images/bg/manna_back.jpg",
-    manna_scaffold: "public/images/bg/manna_high.jpg",
-    ceo_office: "public/images/bg/ceo_room.jpg",
-    prison: "public/images/bg/prison.jpg"
+    world: "images/bg/world_map.jpg",
+    academy: "images/bg/academy_morning.jpg",
+    news: "images/bg/news_studio.jpg",
+    street: "images/bg/night_street.jpg",
+    memory: "images/bg/memory_blur.jpg",
+    awakening: "images/bg/awakening_light.jpg",
+    battle: "images/bg/battle_effect.jpg",
+    home: "images/bg/living_room.jpg",
+    room: "images/bg/leith_room.jpg",
+    lab: "images/bg/airi_lab.jpg",
+    airport: "images/bg/mona_airport.jpg",
+    airplane: "images/bg/airplane_inside.jpg",
+    mona_street: "images/bg/mona_sunny.jpg",
+    manna_entrance: "images/bg/manna_gate.jpg",
+    manna_backyard: "images/bg/manna_back.jpg",
+    manna_scaffold: "images/bg/manna_high.jpg",
+    ceo_office: "images/bg/ceo_room.jpg",
+    prison: "images/bg/prison.jpg"
   },
   sprites: {
-    // スプライト画像も同様に public/ から記述
     // リース（表情差分）
-    reese_normal: "public/images/bg/sprites/tuuzyou-reese.png",
-    reese_closed: "public/images/bg/sprites/metuburu-reese.png",
-    reese_surprised: "public/images/bg/sprites/odoroki-reese.png",
-    reese_laugh: "public/images/bg/sprites/nikkoreese.png",
-    reese_goofy: "public/images/bg/sprites/huzakereese.png",
-    reese_angry: "public/images/bg/sprites/kirereese.png",
-    reese_awakened: "public/images/bg/sprites/kakusei-reese.png",
+    reese_normal: "images/sprites/tuuzyou-reese.png",     // 通常
+    reese_closed: "images/sprites/metuburu-reese.png",     // 目を閉じる
+    reese_surprised: "images/sprites/odoroki-reese.png", // 驚き
+    reese_laugh: "images/sprites/nikkoreese.png",       // 笑う
+    reese_goofy: "images/sprites/huzakereese.png",       // ふざける
+    reese_angry: "images/sprites/kirereese.png",       // 怒り
+    reese_awakened: "images/sprites/kakusei-reese.png", // インペリー・オン（覚醒）
 
     // その他キャラクター・オブジェクト
-    elementer: "public/images/bg/sprites/erementa-.png",
-    donuts: "public/images/bg/sprites/donuts_box.png",
-    ally: "public/images/bg/sprites/ally.png",
-
-    // その他
-    emma: "public/images/bg/sprites/emma_uniform.png",
-    ally_sparkle: "public/images/bg/sprites/ally_happy.png",
-    ally_element: "public/images/bg/sprites/ally_command.png",
-    airi: "public/images/bg/sprites/airi_prof.png",
-    officer: "public/images/bg/sprites/mona_guard.png",
-    guard: "public/images/bg/sprites/manna_security.png",
-    charhan: "public/images/bg/sprites/charhan_suit.png"
+    elementer: "images/sprites/erementa-.png",
+    emma: "images/sprites/emma_uniform.png",
+    ally: "images/sprites/ally.png",
+    ally_sparkle: "images/sprites/ally_happy.png",
+    ally_element: "images/sprites/ally_command.png",
+    airi: "images/sprites/airi_prof.png",
+    officer: "images/sprites/mona_guard.png",
+    donuts: "images/sprites/donuts_box.png",
+    guard: "images/sprites/manna_security.png",
+    charhan: "images/sprites/charhan_suit.png"
   }
 };
 
