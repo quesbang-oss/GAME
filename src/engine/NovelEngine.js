@@ -72,90 +72,194 @@ this.closeSave.onclick = () => {
 };
   }
 
-  renderShell() {
-    this.root.innerHTML = `
-      <main class="game">
-        <section class="stage" aria-label="ゲーム画面">
-          <div class="background" id="background"></div>
-          <div class="sprite-layer" id="spriteLayer"></div>
-          <div class="overlay"></div>
-          <div class="topbar">
+renderShell() {
+  this.root.innerHTML = `
+    <main class="game">
+      <section class="stage" aria-label="ゲーム画面">
+        <div class="background" id="background"></div>
+        <div class="sprite-layer" id="spriteLayer"></div>
+        <div class="overlay"></div>
+        <div class="topbar">
           <div class="mobile-buttons">
-  <button id="saveButton">SAVE</button>
-  <button id="loadButton">LOAD</button>
-</div>
-            <span id="chapter"></span>
-            <span id="clock"></span>
+            <button id="saveButton">SAVE</button>
+            <button id="loadButton">LOAD</button>
           </div>
-          <div class="status" id="status"></div>
+          <span id="chapter"></span>
+          <span id="clock"></span>
+        </div>
+        <div class="status" id="status"></div>
 
-          <div class="message-panel" id="messagePanel">
-            <div class="speaker" id="speaker"></div>
-            <div class="message" id="message"></div>
-            <div class="continue" id="continue">クリック / Enter で進む</div>
-          </div>
+        <div class="message-panel" id="messagePanel">
+          <div class="speaker" id="speaker"></div>
+          <div class="message" id="message"></div>
+          <div class="continue" id="continue"></div>
+        </div>
 
-          <div class="choices" id="choices"></div>
-          <div class="save-menu hidden" id="saveMenu">
-  <div class="save-title">セーブ</div>
+        <div class="choices" id="choices"></div>
+        
+        <!-- セーブ/ロード兼用メニュー (モードによって中身を切り替え) -->
+        <div class="save-menu hidden" id="saveMenu">
+          <div class="save-title" id="saveTitle">記録 / 読込</div>
+          <div class="save-grid" id="saveGrid"></div>
+          <button id="closeSave">閉じる</button>
+        </div>
+      </section>
+    </main>
+  `;
 
-  <div class="save-grid" id="saveGrid">
-  </div>
+  // 各種要素の取得
+  this.background = this.root.querySelector("#background");
+  this.spriteLayer = this.root.querySelector("#spriteLayer");
+  this.chapter = this.root.querySelector("#chapter");
+  this.clock = this.root.querySelector("#clock");
+  this.status = this.root.querySelector("#status");
+  this.messagePanel = this.root.querySelector("#messagePanel");
+  this.speaker = this.root.querySelector("#speaker");
+  this.message = this.root.querySelector("#message");
+  this.continueLabel = this.root.querySelector("#continue");
+  this.choices = this.root.querySelector("#choices");
+  this.saveMenu = this.root.querySelector("#saveMenu");
+  this.saveTitle = this.root.querySelector("#saveTitle");
+  this.saveGrid = this.root.querySelector("#saveGrid");
+  this.closeSave = this.root.querySelector("#closeSave");
+  this.saveButton = this.root.querySelector("#saveButton");
+  this.loadButton = this.root.querySelector("#loadButton");
+}
 
-  <button id="closeSave">
-    閉じる
-  </button>
-</div>
-        </section>
-      </main>
-    `;
+bindEvents() {
+  // メイン画面のクリック
+  this.root.addEventListener("click", (event) => {
+    // メニューが開いている、または選択肢がある場合は次へ進ませない
+    if (!this.saveMenu.classList.contains("hidden")) return;
+    if (event.target.closest(".choice")) return;
+    if (event.target.closest(".mobile-buttons")) return;
 
-    this.background = this.root.querySelector("#background");
-    this.spriteLayer = this.root.querySelector("#spriteLayer");
-    this.chapter = this.root.querySelector("#chapter");
-    this.clock = this.root.querySelector("#clock");
-    this.status = this.root.querySelector("#status");
-    this.messagePanel = this.root.querySelector("#messagePanel");
-    this.speaker = this.root.querySelector("#speaker");
-    this.message = this.root.querySelector("#message");
-    this.continueLabel = this.root.querySelector("#continue");
-    this.choices = this.root.querySelector("#choices");
-    this.saveMenu =
-this.root.querySelector("#saveMenu");
+    this.next();
+  });
 
-this.saveGrid =
-this.root.querySelector("#saveGrid");
-
-this.closeSave =
-this.root.querySelector("#closeSave");
-this.saveButton =
-this.root.querySelector("#saveButton");
-
-this.loadButton =
-this.root.querySelector("#loadButton");
-  }
-  bindEvents() {
-    this.root.addEventListener("click", (event) => {
-      if (event.target.closest(".choice")) return;
+  // キーボード操作
+  window.addEventListener("keydown", (event) => {
+    if (!this.saveMenu.classList.contains("hidden")) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
       this.next();
-    });
+    }
+  });
 
-    window.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        this.next();
+  // --- セーブ機能の呼び出し ---
+  this.saveButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    this.openMenu("save");
+  });
+
+  // --- ロード機能の呼び出し ---
+  this.loadButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    this.openMenu("load");
+  });
+
+  // 閉じるボタン
+  this.closeSave.addEventListener("click", (e) => {
+    e.stopPropagation();
+    this.saveMenu.classList.add("hidden");
+  });
+}
+
+/**
+ * メニューを開く (save または load)
+ */
+openMenu(mode) {
+  // タイトルをDies irae風に書き換え
+  this.saveTitle.textContent = mode === "save" ? "記録 ―― SAVE" : "読込 ―― LOAD";
+  
+  // スロットを生成（ここでセーブ用かロード用かの挙動が決まる）
+  this.renderSaveSlots(mode);
+  
+  this.saveMenu.classList.remove("hidden");
+}
+
+/**
+ * スロットの生成とクリックイベントの割り当て
+ */
+renderSaveSlots(mode) {
+  this.saveGrid.innerHTML = ""; // 一旦空にする
+
+  for (let i = 1; i <= 8; i++) {
+    const slot = document.createElement("button");
+    slot.className = "save-slot";
+    
+    // 保存されているデータがあるか確認
+    const savedData = localStorage.getItem(`save-slot-${i}`);
+    
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      slot.textContent = `SLOT ${i}: ${data.chapter}`;
+    } else {
+      slot.textContent = mode === "save" ? `SLOT ${i}: 空き` : `SLOT ${i}: データなし`;
+      if (mode === "load") slot.disabled = true; // ロード時は空スロットを押せなくする
+    }
+
+    // スロットクリック時の挙動を分ける
+    slot.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (mode === "save") {
+        this.performSave(i);
+      } else {
+        this.performLoad(i);
       }
     });
+
+    this.saveGrid.appendChild(slot);
   }
+}
 
-  start() {
+/**
+ * 実際のセーブ処理（アラートなし）
+ */
+performSave(slotIndex) {
+  const currentStep = this.scenario[this.index];
+  const saveData = {
+    index: this.index,
+    chapter: currentStep.chapter || "???",
+    time: currentStep.time || "--:--",
+    date: new Date().toLocaleString()
+  };
+  
+  localStorage.setItem(`save-slot-${slotIndex}`, JSON.stringify(saveData));
+
+  // アラートの代わりに、スロットの表示を即座に更新して「保存した」ことを視覚的に示す
+  this.renderSaveSlots("save");
+  
+  // 演出として、少しの間だけボタンを光らせるなどの処理を入れることも可能
+  console.log(`Saved to Slot ${slotIndex}`);
+}
+
+/**
+ * 実際のロード処理（アラートなし）
+ */
+performLoad(slotIndex) {
+  const savedData = localStorage.getItem(`save-slot-${slotIndex}`);
+  if (!savedData) return;
+
+  const data = JSON.parse(savedData);
+  this.index = data.index;
+  
+  // メニューを即座に閉じ、ゲーム画面を再描画する
+  this.saveMenu.classList.add("hidden");
+  
+  // 立ち絵をクリアして現在のインデックスの内容を表示
+  this.spriteEls.forEach(el => el.remove());
+  this.spriteEls.clear();
+  this.showCurrent();
+
+  console.log(`Loaded from Slot ${slotIndex}`);
+}
+
+start() {
   this.index = 0;
-
   this.spriteEls.forEach((el) => el.remove());
   this.spriteEls.clear();
-
-  this.makeSaveSlots();
-
+  this.saveMenu.classList.add("hidden");
   this.showCurrent();
 }
 
@@ -346,6 +450,11 @@ this.root.querySelector("#loadButton");
         el.classList.remove("sprite--shake");
         void el.offsetWidth;
         el.classList.add("sprite--shake");
+      } else if (effect === "none") {
+        // 既存シナリオ側で「発動していたエフェクトを止める」ために使われている
+        // 指定だが、これまでは実装が無くグロー演出が消えないままだった。
+        el.classList.remove("sprite--glow");
+        el.classList.remove("sprite--shake");
       }
     }
 
