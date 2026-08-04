@@ -498,6 +498,11 @@ button {
    ============================================================ */
 
 /* メニュー全体：z-indexを最大級にし、pointer-eventsを確実に有効化 */
+/* ============================================================
+   Dies irae風：Save / Load Menu & System Buttons (機能完全版・スマホ対応強化)
+   ============================================================ */
+
+/* メニュー全体：スマホではみ出さないよう max-height と scroll を追加 */
 .save-menu {
   position: absolute;
   left: 50%;
@@ -505,14 +510,22 @@ button {
   transform: translate(-50%, -50%);
   width: 900px;
   max-width: 95%;
+  
+  /* --- スマホ視認性向上のための追加 --- */
+  max-height: 90vh;      /* 画面の高さの90%までに制限 */
+  overflow-y: auto;      /* はみ出た場合はメニュー内でスクロール可能に */
+  scrollbar-width: thin; /* スクロールバーを細く */
+  scrollbar-color: #004488 #000510; /* バーの色も蒼く */
+  /* ---------------------------------- */
+
   padding: 35px;
   background: linear-gradient(135deg, rgba(0, 15, 40, 0.98), rgba(0, 5, 15, 0.95));
   border: 2px solid #004488;
   border-radius: 2px;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 80, 255, 0.4);
-  z-index: 2000; /* 全ての要素の最前面へ */
+  z-index: 2000;
   font-family: "Hiragino Mincho ProN", "MS Mincho", serif;
-  pointer-events: auto; /* クリックを確実に受け取る */
+  pointer-events: auto;
 }
 
 .hidden {
@@ -543,7 +556,7 @@ button {
   height: 140px;
   border: 1px solid #004488;
   background: rgba(0, 20, 40, 0.8);
-  cursor: pointer; /* マウスを乗せると指マークになる */
+  cursor: pointer;
   font-size: 18px;
   color: #c9e9ff;
   transition: all 0.2s ease;
@@ -556,7 +569,6 @@ button {
   user-select: none;
 }
 
-/* ホバー時（PCマウス用） */
 .save-slot:hover {
   background: #003366;
   border-color: #00ccff;
@@ -565,7 +577,6 @@ button {
   color: #ffffff;
 }
 
-/* クリックした瞬間（PCマウス用フィードバック） */
 .save-slot:active {
   transform: translateY(1px) scale(0.98);
   background: #0055aa;
@@ -577,7 +588,7 @@ button {
   opacity: 0.3;
 }
 
-/* 閉じるボタン */
+/* 閉じるボタン：スマホでの押しやすさを強化 */
 #closeSave {
   margin-top: 30px;
   width: 100%;
@@ -591,6 +602,7 @@ button {
   transition: all 0.2s;
   letter-spacing: 5px;
   font-family: inherit;
+  margin-bottom: 10px; /* スクロール時の余白確保 */
 }
 
 #closeSave:hover {
@@ -629,15 +641,46 @@ button {
   color: #ffffff;
   border-color: #00ccff;
   box-shadow: 0 0 15px rgba(0, 170, 255, 0.6);
-  transform: skewX(-15deg); /* デザイン的なアクセント */
+  transform: skewX(-15deg);
 }
 
 .mobile-buttons button:active {
   transform: scale(0.9) skewX(-15deg);
 }
 
-/* スマホ用調整（機能維持） */
+/* ============================================================
+   スマホ用調整（機能を省略せず、視認性を向上）
+   ============================================================ */
 @media (max-width: 768px) {
-  .save-grid { grid-template-columns: repeat(2, 1fr); }
-  .save-menu { width: 95%; padding: 20px; }
+  .save-menu {
+    width: 95%;
+    padding: 20px;
+    max-height: 85vh; /* スマホでは少し短めに */
+  }
+
+  .save-title {
+    font-size: 26px;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+  }
+
+  .save-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* スマホではスロットを少し詰め、閉じるボタンを押しやすくする */
+  .save-slot {
+    height: 100px;
+    font-size: 15px;
+  }
+
+  #closeSave {
+    margin-top: 20px;
+    height: 70px; /* 親指で押しやすい高さ */
+    font-size: 22px;
+    border: 2px solid #00ccff; /* より明るく光らせる */
+    background: linear-gradient(90deg, #002244, #004488);
+    box-shadow: 0 -5px 15px rgba(0, 170, 255, 0.3); /* 浮かせる演出 */
+  }
 }
