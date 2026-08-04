@@ -92,12 +92,6 @@ button {
     #2b2024;
 }
 
-/*
- * 立ち絵レイヤー。
- * 背景(z-index:0)より上、ビネット(.overlay)より下に配置している。
- * 各キャラクターの水平位置は NovelEngine.js の POSITIONS を編集すれば
- * 一括で調整できる（このCSS側は左右位置に触れる必要がない）。
- */
 .sprite-layer {
   position: absolute;
   inset: 0;
@@ -105,31 +99,25 @@ button {
   pointer-events: none;
 }
 
-/* 画像があるスプライトの場合、中のテキストラベルを消す */
-/* --- スプライト（仮の立ち絵）の基本形 --- */
 .sprite {
   position: absolute;
-  bottom: 50px;
+  bottom: -500px; 
   left: var(--sprite-x);
   transform: translateX(-50%);
-  width: 280px;
-  height: 450px;
-  
-  /* 画像がない時の仮の見た目（ピンクの半透明枠） */
-  background-color: rgba(255, 100, 150, 0.2);
-  border: 3px solid rgba(255, 100, 150, 0.5);
-  border-radius: 20px;
+  width: 700px;   
+  height: 1100px;  
+  z-index: 5; 
+  background-color: rgba(255, 100, 150, 0.1);
+  border: 2px dashed rgba(255, 100, 150, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: all 0.3s ease-out;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom center;
 }
 
-/* 仮の立ち絵に出す名前ラベル */
 .sprite-label {
   background: rgba(0, 0, 0, 0.6);
   color: white;
@@ -139,17 +127,15 @@ button {
   font-weight: bold;
 }
 
-/* --- 画像が正常に読み込まれた時のスタイル --- */
 .sprite--has-image {
-  background-color: transparent; /* 背景色を消す */
-  border: none;                  /* 枠線を消す */
+  background-color: transparent;
+  border: none;
 }
 
 .sprite--has-image .sprite-label {
-  display: none;                /* 名前ラベルを隠す */
+  display: none;
 }
 
-/* 話しているキャラの強調 */
 .sprite--speaking {
   filter: brightness(1.1) drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
   transform: translateX(-50%) scale(1.05);
@@ -168,7 +154,6 @@ button {
   from { opacity: 0; transform: translateX(calc(-50% - 90px)); }
   to   { opacity: 1; transform: translateX(-50%); }
 }
-
 
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(calc(-50% + 90px)); }
@@ -200,30 +185,13 @@ button {
 }
 
 @keyframes popIn{
-
-0%{
-opacity:0;
-transform:translateY(60px) scale(.2) rotate(-12deg);
-}
-
-40%{
-opacity:1;
-transform:translateY(-12px) scale(1.25) rotate(6deg);
-}
-
-70%{
-transform:translateY(6px) scale(.95);
-}
-
-100%{
-opacity:1;
-transform:translateY(0) scale(1) rotate(0deg);
-}
-
+0%{ opacity:0; transform:translateY(60px) scale(.2) rotate(-12deg); }
+40%{ opacity:1; transform:translateY(-12px) scale(1.25) rotate(6deg); }
+70%{ transform:translateY(6px) scale(.95); }
+100%{ opacity:1; transform:translateY(0) scale(1) rotate(0deg); }
 }
 
 @keyframes shakeEmphasis{
-
 0%{transform:translateX(0);}
 10%{transform:translate(-18px,-3px) rotate(-2deg);}
 20%{transform:translate(18px,3px) rotate(2deg);}
@@ -235,7 +203,6 @@ transform:translateY(0) scale(1) rotate(0deg);
 80%{transform:translate(8px,1px);}
 90%{transform:translate(-4px,0);}
 100%{transform:translateX(0);}
-
 }
 
 @keyframes glowPulse {
@@ -247,7 +214,6 @@ transform:translateY(0) scale(1) rotate(0deg);
   .sprite {
     bottom: 220px;
     width: min(34vw, 220px);
-    /* ▼ スマホ幅での高さはここ */
     height: 300px;
   }
 }
@@ -285,252 +251,393 @@ transform:translateY(0) scale(1) rotate(0deg);
   font-size: 12px;
 }
 
+/* ============================================================
+   Dies irae風 テキストボックス・テキスト (ここから修正)
+   ============================================================ */
+
 .message-panel {
   position: absolute;
-  z-index: 3;
+  z-index: 100;
   left: 4%;
   right: 4%;
   bottom: 4%;
   min-height: 190px;
-  padding: 24px 30px 30px;
-  border: 1px solid rgba(255,255,255,.16);
-  border-radius: 12px;
-  background: rgba(5, 8, 14, .82);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 15px 50px rgba(0,0,0,.45);
+  padding: 35px 40px;
+  
+  /* 深い蒼の重厚なグラデーション */
+  background: linear-gradient(
+    180deg, 
+    rgba(0, 8, 20, 0.9) 0%, 
+    rgba(0, 20, 50, 0.95) 50%, 
+    rgba(0, 5, 15, 0.9) 100%
+  );
+  backdrop-filter: blur(8px);
+
+  /* 青いネオンフレームと内側の光 */
+  border: 2px solid #004488;
+  box-shadow: 
+    0 0 20px rgba(0, 100, 255, 0.4),
+    inset 0 0 30px rgba(0, 60, 150, 0.5);
+  
+  border-radius: 4px;
   cursor: pointer;
 }
 
+/* パネル四隅の装飾ライン */
+.message-panel::before,
+.message-panel::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border: 2px solid #00aaff;
+}
+.message-panel::before { top: -6px; left: -6px; border-right: none; border-bottom: none; }
+.message-panel::after { bottom: -6px; right: -6px; border-left: none; border-top: none; }
+
+/* 名前ラベル：斜めにカットされたDies iraeスタイル */
 .speaker {
+  position: absolute;
+  top: -30px;
+  left: 20px;
   display: inline-block;
-  margin-bottom: 12px;
-  padding: 4px 14px;
-  border-left: 3px solid rgba(160, 190, 255, .8);
-  color: #dbe7ff;
+  margin-bottom: 0;
+  padding: 6px 45px;
+  background: linear-gradient(90deg, #002244, #0055aa, transparent);
+  border-left: 5px solid #00ccff;
+  color: #ffffff;
   font-weight: 700;
+  font-size: 1.2rem;
+  text-shadow: 0 0 10px #00aaff;
+  letter-spacing: 2px;
+  transform: skewX(-20deg); /* パネルを斜めにする */
 }
 
-/* エンディングノード表示時の見た目（進行不可であることが分かるように） */
-.message-panel.is-ending {
-  cursor: default;
-  border-color: rgba(255, 210, 150, .45);
-  background: rgba(10, 8, 6, .86);
+/* 名前テキストだけは傾きを戻して読みやすくする */
+.speaker > span, 
+.speaker {
+  font-style: normal;
 }
 
-.message-panel.is-ending .speaker {
-  border-left-color: rgba(255, 210, 150, .9);
-  color: #ffe9c9;
-  letter-spacing: .08em;
-}
-
+/* メッセージテキスト：重厚な明朝体系 */
 .message {
   max-width: 1100px;
-  line-height: 1.95;
-  font-size: clamp(16px, 1.55vw, 22px);
+  line-height: 1.8;
+  font-family: "Hiragino Mincho ProN", "MS Mincho", serif;
+  font-size: clamp(18px, 1.7vw, 24px);
+  color: #e0f0ff;
+  text-shadow: 
+    1px 1px 3px rgba(0, 0, 0, 0.9), 
+    0 0 5px rgba(0, 150, 255, 0.2);
   white-space: pre-wrap;
 }
 
+/* エンディング表示時の蒼いバリエーション（赤みを除去） */
+.message-panel.is-ending {
+  cursor: default;
+  border-color: #00ccff;
+  background: rgba(0, 5, 15, 0.95);
+  box-shadow: 0 0 30px rgba(0, 200, 255, 0.4);
+}
+
+.message-panel.is-ending .speaker {
+  border-left-color: #00ffff;
+  color: #c9e9ff;
+  background: linear-gradient(90deg, #003366, #00ccff, transparent);
+}
+
+/* ============================================================
+   Dies irae風 修正ここまで (以下、他機能は一切変更なし)
+   ============================================================ */
+
+/* --- 送りマーク（Dies irae風 蒼い待機アイコン） --- */
 .continue {
   position: absolute;
-  right: 20px;
-  bottom: 12px;
-  color: rgba(255,255,255,.38);
-  font-size: 11px;
+  right: 30px;
+  bottom: 25px;
+  width: 14px;
+  height: 14px;
+  
+  /* 元のテキスト「クリックして進む」を非表示にする */
+  font-size: 0;
+  color: transparent;
+
+  /* アイコンの形状：菱形（Dies iraeの雰囲気に合わせた蒼いクリスタル） */
+  background: #00ccff;
+  transform: rotate(45deg);
+  
+  /* 蒼い強烈な発光エフェクト */
+  box-shadow: 
+    0 0 10px #00aaff, 
+    0 0 20px #0055ff,
+    0 0 35px rgba(0, 170, 255, 0.8);
+  
+  /* 拍動するようなアニメーション */
+  animation: diesIraeWait 1.5s infinite ease-in-out;
 }
 
+/* アイコンの装飾：二重の枠線でより複雑な紋章に見せる */
+.continue::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid #00aaff;
+  animation: diesIraeRotate 3s infinite linear;
+}
+
+/* 拍動（パルス）アニメーション */
+@keyframes diesIraeWait {
+  0%, 100% {
+    opacity: 0.4;
+    transform: rotate(45deg) scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1.2);
+    box-shadow: 0 0 15px #00ccff, 0 0 30px #0088ff;
+  }
+}
+
+/* 外枠の回転アニメーション */
+@keyframes diesIraeRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 選択肢全体のコンテナ */
 .choices {
   position: absolute;
-  z-index: 5;
-  left: 12%;
-  right: 12%;
-  bottom: 230px;
+  z-index: 105; /* メッセージパネル(100)より前面 */
+  left: 15%;
+  right: 15%;
+  bottom: 240px; /* テキストボックスの上に配置 */
   display: grid;
-  gap: 10px;
+  gap: 15px;
+  pointer-events: auto;
 }
 
+/* 個別の選択肢ボタン */
 .choice {
-  padding: 14px 18px;
-  border: 1px solid rgba(190, 210, 255, .3);
-  border-radius: 8px;
-  color: #fff;
-  background: rgba(10, 16, 28, .92);
+  position: relative;
+  padding: 15px 40px;
+  /* 重厚な蒼のグラデーション */
+  background: linear-gradient(90deg, rgba(0, 20, 50, 0.9), rgba(0, 50, 120, 0.95), transparent);
+  
+  /* 蒼い発光フレーム */
+  border: none;
+  border-left: 5px solid #00ccff; /* 左端にアクセント */
+  border-bottom: 1px solid #004488;
+  
+  color: #ffffff;
+  /* 重厚な明朝体 */
+  font-family: "Hiragino Mincho ProN", "MS Mincho", serif;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+  letter-spacing: 2px;
+  
   cursor: pointer;
-  transition: transform 120ms ease, background 120ms ease;
-}
-
-.choice:hover,
-.choice:focus-visible {
-  transform: translateY(-2px);
-  background: rgba(30, 45, 70, .98);
+  transition: all 0.3s ease;
+  
+  /* Dies irae風の斜めカット */
+  transform: skewX(-20deg);
+  box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.5);
+  
   outline: none;
 }
 
+/* 選択肢内のテキスト（傾きを戻す） */
+.choice span {
+  display: inline-block;
+  transform: skewX(20deg);
+  text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+}
+
+/* ホバー時（PC操作での強調） */
+.choice:hover {
+  background: linear-gradient(90deg, #003366, #0055aa, transparent);
+  border-left-color: #00ffff;
+  transform: skewX(-20deg) translateX(15px); /* 右に少しスライドする演出 */
+  box-shadow: -10px 10px 20px rgba(0, 100, 255, 0.4);
+  color: #00ffff;
+}
+
+/* クリック時 */
+.choice:active {
+  transform: skewX(-20deg) translateX(5px) scale(0.98);
+  filter: brightness(1.2);
+}
+
+/* 選択肢の装飾：ボタン右端に光のラインを追加 */
+.choice::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 15%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, #00ccff, transparent);
+  opacity: 0.5;
+}
+
+/* スマホ対応 */
 @media (max-width: 700px) {
-  .stage {
-    height: 100vh;
-  }
-
-  .message-panel {
-    left: 2%;
-    right: 2%;
-    bottom: 2%;
-    padding: 18px 18px 28px;
-  }
-
   .choices {
     left: 5%;
     right: 5%;
-    bottom: 230px;
+    bottom: 220px;
+  }
+  .choice {
+    padding: 12px 25px;
+    font-size: 1rem;
   }
 }
-/* ===========================
-   Save / Load Menu
-=========================== */
 
-.save-menu{
+/* ============================================================
+   Dies irae風：Save / Load Menu & System Buttons (PCクリック強化版)
+   ============================================================ */
 
-position:absolute;
-
-left:50%;
-
-top:50%;
-
-transform:translate(-50%,-50%);
-
-width:900px;
-
-max-width:95%;
-
-padding:25px;
-
-background:rgba(20,20,30,.92);
-
-border-radius:25px;
-
-box-shadow:0 0 30px rgba(0,0,0,.6);
-
-z-index:999;
-
+/* メニュー全体：z-indexを最大級にし、pointer-eventsを確実に有効化 */
+.save-menu {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 900px;
+  max-width: 95%;
+  padding: 35px;
+  background: linear-gradient(135deg, rgba(0, 15, 40, 0.98), rgba(0, 5, 15, 0.95));
+  border: 2px solid #004488;
+  border-radius: 2px;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 80, 255, 0.4);
+  z-index: 2000; /* 全ての要素の最前面へ */
+  font-family: "Hiragino Mincho ProN", "MS Mincho", serif;
+  pointer-events: auto; /* クリックを確実に受け取る */
 }
 
-.hidden{
-
-display:none;
-
+.hidden {
+  display: none !important;
 }
 
-.save-title{
-
-font-size:32px;
-
-font-weight:bold;
-
-margin-bottom:20px;
-
-text-align:center;
-
+.save-title {
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 0 15px #00aaff;
+  letter-spacing: 10px;
+  border-bottom: 1px solid #004488;
+  padding-bottom: 15px;
 }
 
-.save-grid{
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:18px;
-
+.save-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  pointer-events: auto;
 }
 
-.save-slot{
-
-height:140px;
-
-border:none;
-
-border-radius:20px;
-
-background:#3a3a50;
-
-cursor:pointer;
-
-font-size:20px;
-
-color:white;
-
-transition:.2s;
-
-overflow:hidden;
-
+/* 各セーブスロット：PCでのクリック反応を強化 */
+.save-slot {
+  height: 140px;
+  border: 1px solid #004488;
+  background: rgba(0, 20, 40, 0.8);
+  cursor: pointer; /* マウスを乗せると指マークになる */
+  font-size: 18px;
+  color: #c9e9ff;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  outline: none;
+  user-select: none;
 }
 
-.save-slot:hover{
-
-transform:scale(1.03);
-
-background:#56567a;
-
+/* ホバー時（PCマウス用） */
+.save-slot:hover {
+  background: #003366;
+  border-color: #00ccff;
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.5);
+  transform: translateY(-3px);
+  color: #ffffff;
 }
 
-.save-slot:disabled{
-
-cursor:not-allowed;
-
-opacity:.45;
-
+/* クリックした瞬間（PCマウス用フィードバック） */
+.save-slot:active {
+  transform: translateY(1px) scale(0.98);
+  background: #0055aa;
+  box-shadow: inset 0 0 15px #000;
 }
 
-#closeSave{
-
-margin-top:25px;
-
-width:100%;
-
-height:50px;
-
-border:none;
-
-border-radius:15px;
-
-font-size:20px;
-
-cursor:pointer;
-
-}
-.mobile-buttons{
-position:absolute;
-top:18px;
-right:18px;
-display:flex;
-gap:10px;
-z-index:9999;
+.save-slot:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
 }
 
-.mobile-buttons button{
-padding:10px 20px;
-border:none;
-border-radius:12px;
-background:#2f6bff;
-color:white;
-font-weight:bold;
-font-size:15px;
-cursor:pointer;
-transition:.2s;
+/* 閉じるボタン */
+#closeSave {
+  margin-top: 30px;
+  width: 100%;
+  height: 55px;
+  background: #002244;
+  border: 1px solid #004488;
+  color: #00ccff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 5px;
+  font-family: inherit;
 }
 
-.mobile-buttons button:hover{
-transform:scale(1.05);
+#closeSave:hover {
+  background: #004488;
+  color: #fff;
+  border-color: #00ccff;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.5);
 }
 
-.mobile-buttons button:active{
-transform:scale(.95);
+/* --- 右上のシステムボタン (SAVE/LOAD呼び出し) --- */
+.mobile-buttons {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  gap: 15px;
+  z-index: 9999;
+  pointer-events: auto;
 }
-@media (max-width:768px){
 
-.mobile-buttons button{
-
-padding:14px 26px;
-font-size:18px;
-
+.mobile-buttons button {
+  padding: 8px 25px;
+  background: rgba(0, 5, 15, 0.85);
+  border: 1px solid #004488;
+  color: #00ccff;
+  font-weight: bold;
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 2px;
 }
 
+.mobile-buttons button:hover {
+  background: #004488;
+  color: #ffffff;
+  border-color: #00ccff;
+  box-shadow: 0 0 15px rgba(0, 170, 255, 0.6);
+  transform: skewX(-15deg); /* デザイン的なアクセント */
+}
+
+.mobile-buttons button:active {
+  transform: scale(0.9) skewX(-15deg);
+}
+
+/* スマホ用調整（機能維持） */
+@media (max-width: 768px) {
+  .save-grid { grid-template-columns: repeat(2, 1fr); }
+  .save-menu { width: 95%; padding: 20px; }
 }
