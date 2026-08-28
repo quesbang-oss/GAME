@@ -641,3 +641,91 @@ button {
   .save-grid { grid-template-columns: repeat(2, 1fr); }
   .save-menu { width: 95%; padding: 20px; }
 }
+
+/* ============================================================
+   スマホ・タブレット対応 追加設定
+   ============================================================ */
+html, body, #app { width:100%; height:100%; min-height:100%; margin:0; padding:0; }
+body { overflow:hidden; overscroll-behavior:none; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+button, .choice, .save-slot, .message-panel { touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
+
+@media (max-width: 1024px) {
+  .game { width:100vw; min-height:100dvh; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .stage { width:100vw; height:100dvh; height:100vh; max-width:none; max-height:none; }
+  .topbar { top:12px; left:16px; right:16px; font-size:12px; }
+  .status { top:38px; left:16px; font-size:10px; }
+  .sprite { width:clamp(260px,55vw,500px); height:clamp(500px,85vh,850px); bottom:-42vh; }
+  .message-panel { left:3%; right:3%; bottom:3%; min-height:150px; padding:clamp(20px,3vw,30px) clamp(20px,4vw,35px); }
+  .speaker { top:-27px; left:14px; padding:5px 30px; font-size:clamp(14px,2vw,18px); }
+  .message { max-width:100%; font-size:clamp(16px,2.8vw,22px); line-height:1.7; }
+  .continue { right:20px; bottom:18px; width:12px; height:12px; }
+  .choices { left:8%; right:8%; bottom:210px; gap:12px; }
+  .choice { min-height:52px; padding:13px 28px; font-size:clamp(15px,2.5vw,19px); letter-spacing:1px; }
+  .mobile-buttons { top:12px; right:12px; gap:8px; }
+  .mobile-buttons button { min-height:38px; padding:7px 14px; font-size:12px; letter-spacing:1px; }
+  .save-menu { width:92%; max-height:90dvh; padding:20px; overflow-y:auto; }
+  .save-title { font-size:26px; margin-bottom:20px; letter-spacing:6px; }
+  .save-grid { grid-template-columns:repeat(2,1fr); gap:12px; }
+  .save-slot { height:110px; font-size:15px; }
+  #closeSave { height:50px; margin-top:20px; font-size:16px; }
+}
+
+@media (max-width: 700px) {
+  .game { width:100vw; height:100dvh; min-height:100dvh; }
+  .stage { width:100vw; height:100dvh; min-height:100dvh; box-shadow:none; }
+  .topbar { top:8px; left:10px; right:10px; font-size:10px; }
+  .status { display:none; }
+  .sprite { width:68vw; height:78vh; max-width:440px; bottom:-32vh; background-position:bottom center; }
+  .sprite--speaking { transform:translateX(-50%) scale(1.02); }
+  .message-panel { left:3%; right:3%; bottom:max(2.5%,env(safe-area-inset-bottom)); min-height:135px; padding:20px 18px 35px; border-width:1px; }
+  .speaker { top:-24px; left:10px; padding:4px 24px; border-left-width:4px; font-size:15px; letter-spacing:1px; }
+  .message { width:100%; font-size:clamp(15px,4vw,18px); line-height:1.65; word-break:break-word; overflow-wrap:anywhere; }
+  .continue { right:16px; bottom:15px; width:11px; height:11px; }
+  .choices { left:7%; right:7%; bottom:180px; gap:10px; }
+  .choice { width:100%; min-height:48px; padding:11px 18px; font-size:clamp(14px,3.8vw,17px); letter-spacing:.5px; border-left-width:4px; }
+  .choice:hover { transform:skewX(-20deg); }
+  .choice:active { transform:skewX(-20deg) scale(.97); }
+  .mobile-buttons { top:max(8px,env(safe-area-inset-top)); right:8px; gap:6px; }
+  .mobile-buttons button { min-width:58px; min-height:34px; padding:6px 10px; font-size:10px; letter-spacing:0; }
+  .mobile-buttons button:hover { transform:none; }
+  .mobile-buttons button:active { transform:scale(.94); }
+  .save-menu { left:50%; top:50%; width:94%; max-width:none; max-height:90dvh; padding:16px; overflow-y:auto; transform:translate(-50%,-50%); }
+  .save-title { font-size:22px; margin-bottom:15px; padding-bottom:10px; letter-spacing:4px; }
+  .save-grid { grid-template-columns:repeat(2,1fr); gap:8px; }
+  .save-slot { height:90px; font-size:13px; }
+  #closeSave { height:45px; margin-top:15px; font-size:14px; letter-spacing:3px; }
+}
+
+@media (max-width: 430px) {
+  .sprite { width:78vw; height:72vh; bottom:-27vh; }
+  .message-panel { min-height:125px; padding:18px 15px 32px; }
+  .speaker { top:-22px; padding:4px 18px; font-size:13px; }
+  .message { font-size:15px; line-height:1.6; }
+  .choices { left:6%; right:6%; bottom:165px; gap:8px; }
+  .choice { min-height:44px; padding:9px 14px; font-size:14px; }
+  .mobile-buttons button { min-width:50px; padding:5px 8px; font-size:9px; }
+}
+
+@media (max-height:600px) and (orientation:landscape) {
+  .sprite { width:42vw; height:110vh; bottom:-48vh; }
+  .message-panel { left:4%; right:4%; bottom:3%; min-height:95px; padding:14px 22px 25px; }
+  .speaker { top:-22px; font-size:13px; }
+  .message { font-size:clamp(13px,2vw,17px); line-height:1.45; }
+  .choices { left:15%; right:15%; bottom:125px; gap:6px; }
+  .choice { min-height:38px; padding:7px 18px; font-size:13px; }
+  .mobile-buttons { top:6px; right:8px; }
+  .mobile-buttons button { min-height:28px; padding:4px 9px; font-size:9px; }
+}
+
+@supports (padding:max(0px)) {
+  .stage { padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
+}
+
+@media (hover:none) {
+  .choice:hover { background:linear-gradient(90deg,rgba(0,20,50,.9),rgba(0,50,120,.95),transparent); color:#fff; box-shadow:-5px 5px 15px rgba(0,0,0,.5); }
+  .save-slot:hover { background:rgba(0,20,40,.8); border-color:#004488; transform:none; box-shadow:none; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+}
