@@ -42,6 +42,26 @@ button {
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.75);
 }
 
+/* ============================================================
+   描画レイヤー（NovelEngine の LAYERS と1対1で対応）
+
+     z-index 105 : .choices        Choose Layer   （最前面）
+     z-index   4 : .layer-battle   Battle Layer
+     z-index   3 : .layer-effect   Effect Layer
+     z-index   1 : .sprite-layer   Character Layer
+     z-index   0 : .layer-background / .background  Background Layer（最背面）
+
+   ※ .layer-background は「旧背景と新背景を一時的に2枚重ねる」ための入れ物。
+      中身の .background は従来とまったく同じ見た目のまま。
+   ============================================================ */
+
+.layer-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .background {
   position: absolute;
   inset: 0;
@@ -640,6 +660,320 @@ button {
 @media (max-width: 768px) {
   .save-grid { grid-template-columns: repeat(2, 1fr); }
   .save-menu { width: 95%; padding: 20px; }
+}
+
+/* ============================================================
+   Effect Layer  （NovelEngine の EFFECTS と対応）
+   ------------------------------------------------------------
+   ・中身が空のときは完全に透明で、既存の見た目に一切影響しない。
+   ・opacity はエンジンがインラインで 0% → 100% に動かす。
+   ・新しいエフェクトを足すときは EFFECTS に1行 + （必要なら）ここにクラス。
+   ============================================================ */
+.layer-effect {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.layer-effect .fx {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.fx--noise {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px);
+  animation: fxNoise .12s steps(2) infinite;
+}
+
+.fx--glitch {
+  background:
+    linear-gradient(90deg, rgba(0,200,255,.18), transparent 40%, rgba(255,0,90,.18));
+  animation: fxGlitch var(--fx-duration, 1000ms) steps(6) 1;
+}
+
+.fx--zoom {
+  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,.75) 92%);
+  animation: fxZoom var(--fx-duration, 1000ms) ease-out 1;
+}
+
+@keyframes fxNoise {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(3px); }
+}
+
+@keyframes fxGlitch {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-8px); }
+  50%  { transform: translateX(6px); }
+  75%  { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes fxZoom {
+  from { transform: scale(1.25); }
+  to   { transform: scale(1); }
+}
+
+/* 画面全体の揺れ（Effect Shake / Battle Shake・Critical・Explosion で使用） */
+.stage--shake {
+  animation: stageShake 420ms ease infinite;
+}
+
+@keyframes stageShake {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-9px, 3px); }
+  40%  { transform: translate(8px, -3px); }
+  60%  { transform: translate(-6px, 2px); }
+  80%  { transform: translate(5px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ============================================================
+   Battle Layer  （NovelEngine の BATTLES と対応・全18種）
+   ------------------------------------------------------------
+   Boom / Flash / Hit / Critical / Slash / Impact / Shake /
+   Explosion / Spark / Shockwave / Fire / Smoke / Electric /
+   Speed / Dark / Freeze / Light / Cross
+   すべてCSSのみで描画。画像素材は増やしていない。
+   表示時間はエンジンが --fx-duration として渡す。
+   ============================================================ */
+.layer-battle {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.battle-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation-duration: var(--fx-duration, 1000ms);
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+  animation-iteration-count: 1;
+}
+
+/* 演出なし（画面揺れだけ担当する Shake 用） */
+.battle-fx--none { display: none; }
+
+/* 1. Boom ― 中央から膨らむ爆風 */
+.battle-fx--boom {
+  background: radial-gradient(circle at 50% 55%, rgba(255,240,190,.95) 0%, rgba(255,150,40,.85) 22%, rgba(180,40,0,.55) 42%, transparent 62%);
+  animation-name: fxBoom;
+}
+@keyframes fxBoom {
+  0%   { opacity: 0; transform: scale(.2); }
+  25%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.6); }
+}
+
+/* 2. Flash ― 白い閃光 */
+.battle-fx--flash {
+  background: #ffffff;
+  animation-name: fxFlash;
+}
+@keyframes fxFlash {
+  0%   { opacity: 0; }
+  10%  { opacity: .95; }
+  100% { opacity: 0; }
+}
+
+/* 3. Hit ― 打撃の衝撃 */
+.battle-fx--hit {
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.9) 0%, rgba(255,80,80,.5) 18%, transparent 40%);
+  animation-name: fxHit;
+}
+@keyframes fxHit {
+  0%   { opacity: 0; transform: scale(.4); }
+  20%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+/* 4. Critical ― 赤い十字の一撃 */
+.battle-fx--critical {
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(255,40,40,.9) 50%, transparent 53%),
+    linear-gradient(0deg,  transparent 47%, rgba(255,40,40,.9) 50%, transparent 53%),
+    radial-gradient(circle at 50% 50%, rgba(255,200,200,.5), transparent 55%);
+  animation-name: fxCritical;
+}
+@keyframes fxCritical {
+  0%   { opacity: 0; transform: scale(.6) rotate(-8deg); }
+  25%  { opacity: 1; transform: scale(1.05) rotate(0deg); }
+  100% { opacity: 0; transform: scale(1.25) rotate(4deg); }
+}
+
+/* 5. Slash ― 斜めの斬撃 */
+.battle-fx--slash {
+  background: linear-gradient(115deg, transparent 44%, rgba(255,255,255,.95) 49%, rgba(150,220,255,.8) 51%, transparent 56%);
+  animation-name: fxSlash;
+}
+@keyframes fxSlash {
+  0%   { opacity: 0; transform: translateX(-35%) scaleY(1.4); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(35%) scaleY(1.4); }
+}
+
+/* 6. Impact ― 集中線 */
+.battle-fx--impact {
+  background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,255,255,.5) 0deg 2deg, transparent 2deg 9deg);
+  animation-name: fxImpact;
+}
+@keyframes fxImpact {
+  0%   { opacity: 0; transform: scale(1.6); }
+  25%  { opacity: .85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(.8); }
+}
+
+/* 7. Explosion ― 大爆発（多重） */
+.battle-fx--explosion {
+  background:
+    radial-gradient(circle at 38% 60%, rgba(255,220,150,.9) 0%, rgba(255,120,20,.7) 18%, transparent 36%),
+    radial-gradient(circle at 62% 42%, rgba(255,240,190,.9) 0%, rgba(230,70,10,.7) 16%, transparent 34%),
+    radial-gradient(circle at 50% 52%, rgba(255,255,220,.95) 0%, rgba(200,60,0,.6) 24%, transparent 52%);
+  animation-name: fxExplosion;
+}
+@keyframes fxExplosion {
+  0%   { opacity: 0; transform: scale(.25); filter: brightness(1.6); }
+  20%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.8); filter: brightness(.7); }
+}
+
+/* 8. Spark ― 火花 */
+.battle-fx--spark {
+  background:
+    radial-gradient(circle at 30% 35%, rgba(255,255,200,.95) 0 3px, transparent 4px),
+    radial-gradient(circle at 68% 28%, rgba(255,230,150,.95) 0 2px, transparent 3px),
+    radial-gradient(circle at 45% 62%, rgba(255,255,255,.95) 0 3px, transparent 4px),
+    radial-gradient(circle at 72% 70%, rgba(255,220,120,.95) 0 2px, transparent 3px),
+    radial-gradient(circle at 55% 45%, rgba(255,255,255,.9) 0 2px, transparent 3px);
+  animation-name: fxSpark;
+}
+@keyframes fxSpark {
+  0%   { opacity: 0; transform: scale(.6); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* 9. Shockwave ― 広がる衝撃波のリング */
+.battle-fx--shockwave {
+  background: radial-gradient(circle at 50% 50%, transparent 38%, rgba(190,230,255,.85) 42%, rgba(120,190,255,.25) 46%, transparent 52%);
+  animation-name: fxShockwave;
+}
+@keyframes fxShockwave {
+  0%   { opacity: 0; transform: scale(.15); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(2.2); }
+}
+
+/* 10. Fire ― 下から立ち上る炎 */
+.battle-fx--fire {
+  background: linear-gradient(0deg, rgba(255,90,0,.85) 0%, rgba(255,170,40,.55) 25%, transparent 60%);
+  animation-name: fxFire;
+}
+@keyframes fxFire {
+  0%   { opacity: 0; transform: translateY(18%) scaleY(.7); }
+  25%  { opacity: 1; transform: translateY(0) scaleY(1); }
+  70%  { opacity: .9; transform: translateY(-3%) scaleY(1.05); }
+  100% { opacity: 0; transform: translateY(-8%) scaleY(1.1); }
+}
+
+/* 11. Smoke ― 立ちこめる煙 */
+.battle-fx--smoke {
+  background:
+    radial-gradient(circle at 30% 70%, rgba(190,190,195,.55), transparent 45%),
+    radial-gradient(circle at 65% 62%, rgba(150,155,165,.5), transparent 42%),
+    linear-gradient(0deg, rgba(120,125,135,.45), transparent 65%);
+  animation-name: fxSmoke;
+}
+@keyframes fxSmoke {
+  0%   { opacity: 0; transform: translateY(12%) scale(1); }
+  30%  { opacity: .9; }
+  100% { opacity: 0; transform: translateY(-10%) scale(1.25); }
+}
+
+/* 12. Electric ― 走る電撃 */
+.battle-fx--electric {
+  background:
+    linear-gradient(100deg, transparent 46%, rgba(180,240,255,.95) 48%, transparent 50%),
+    linear-gradient(72deg,  transparent 58%, rgba(120,200,255,.85) 60%, transparent 62%),
+    radial-gradient(circle at 50% 50%, rgba(120,200,255,.25), transparent 60%);
+  animation-name: fxElectric;
+  animation-timing-function: steps(5);
+}
+@keyframes fxElectric {
+  0%   { opacity: 0; transform: translateX(-2%) scaleY(1); }
+  20%  { opacity: 1; transform: translateX(2%) scaleY(1.04); }
+  55%  { opacity: .6; transform: translateX(-1%) scaleY(.98); }
+  100% { opacity: 0; transform: translateX(0) scaleY(1); }
+}
+
+/* 13. Speed ― 高速移動の流線 */
+.battle-fx--speed {
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 2px, transparent 2px 26px);
+  animation-name: fxSpeed;
+  animation-timing-function: linear;
+}
+@keyframes fxSpeed {
+  0%   { opacity: 0; transform: translateX(6%); }
+  20%  { opacity: .9; }
+  100% { opacity: 0; transform: translateX(-10%); }
+}
+
+/* 14. Dark ― 闇が這い寄る */
+.battle-fx--dark {
+  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(10,0,25,.92) 85%);
+  animation-name: fxDark;
+}
+@keyframes fxDark {
+  0%   { opacity: 0; transform: scale(1.4); }
+  35%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+
+/* 15. Freeze ― 凍結 */
+.battle-fx--freeze {
+  background:
+    linear-gradient(35deg, rgba(190,240,255,.35) 0 6px, transparent 6px 18px),
+    linear-gradient(-35deg, rgba(220,250,255,.3) 0 5px, transparent 5px 20px),
+    radial-gradient(circle at 50% 50%, rgba(160,220,255,.35), transparent 70%);
+  animation-name: fxFreeze;
+}
+@keyframes fxFreeze {
+  0%   { opacity: 0; transform: scale(1.1); filter: blur(4px); }
+  30%  { opacity: 1; transform: scale(1); filter: blur(0); }
+  100% { opacity: 0; }
+}
+
+/* 16. Light ― 神々しい光柱 */
+.battle-fx--light {
+  background:
+    linear-gradient(90deg, transparent 38%, rgba(255,255,220,.55) 50%, transparent 62%),
+    radial-gradient(circle at 50% 30%, rgba(255,255,230,.8), transparent 55%);
+  animation-name: fxLight;
+}
+@keyframes fxLight {
+  0%   { opacity: 0; transform: scaleY(.4); }
+  30%  { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(1.1); }
+}
+
+/* 17. Cross ― 交差する二連斬 */
+.battle-fx--cross {
+  background:
+    linear-gradient(115deg, transparent 46%, rgba(255,255,255,.95) 50%, transparent 54%),
+    linear-gradient(65deg,  transparent 46%, rgba(200,240,255,.9) 50%, transparent 54%);
+  animation-name: fxCross;
+}
+@keyframes fxCross {
+  0%   { opacity: 0; transform: scale(.7) rotate(-6deg); }
+  30%  { opacity: 1; transform: scale(1) rotate(0deg); }
+  100% { opacity: 0; transform: scale(1.2) rotate(6deg); }
 }
 
 /* ============================================================
