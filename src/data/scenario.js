@@ -1,9 +1,45 @@
-/*
+/* ============================================================================
  * シナリオデータ（完全版：リース表情差分・インペリーオン対応）
- * シナリオ内容を一切省略せず、立ち絵演出を強化
- */
+ * ----------------------------------------------------------------------------
+ * ■ シナリオ番号システム
+ *   各ノードには必ず `id` を付ける。最初が "1" で、以降 "2", "3", … と増える。
+ *   分岐先は「数字 + 記号」で表す。例）"42" の分岐先 → "42a" "42a2" "42a3"
+ *   id は配列のindexではなく、NovelEngine 側の Map で解決される。
+ *   そのため、並び順を入れ替えても分岐先（next）は壊れない。
+ *   旧ラベル（"ch2-start" など）は `alias` として残してあり、そのまま使える。
+ *
+ * ■ ノードの書き方
+ *   {
+ *     id: "10",
+ *     chapter: "第一章",          // 上部の章表示
+ *     time: "07:10",              // 上部の時刻表示
+ *     background: ASSETS.backgrounds.academy,   // 背景（即時切替・従来どおり）
+ *     speaker: "リース",
+ *     text: "……",
+ *     sprites: [ ... ],           // 従来の立ち絵指定（そのまま使える）
+ *     ending: true,               // ルート終了ノード
+ *     cmd: [                      // ★ 新・演出コマンド（レイヤーへの指示書）
+ *       'Choose ("こんにちはという",11 or "黙れという",11a)',
+ *       "Battle Boom:1s",
+ *       "Effect Black:1s",
+ *       "Character Fade_out:ally:1s",
+ *       "Back Fade_in:images/bg/street.jpg:1s"
+ *     ]
+ *   }
+ *
+ * ■ コマンドとレイヤーの対応（詳細は engine/NovelEngine.js の先頭を参照）
+ *     Choose    → Choose Layer     （最前面・選択肢）
+ *     Battle    → Battle Layer     （バトル演出。BATTLES に18種）
+ *     Effect    → Effect Layer     （暗転などの画面演出。EFFECTS に15種）
+ *     Character → Character Layer  （立ち絵の登場／退場／表情／位置）
+ *     Back      → Background Layer （新背景を上から重ねてフェードイン）
+ *
+ *   書かなかったレイヤーは「今の状態のまま」維持される。
+ *   何も起こさないレイヤーは、そのノードに一行も書かなくてよい。
+ * ========================================================================== */
 
 // すべての画像パスを一括管理
+// backgrounds = BACKGROUNDS / sprites = CHARACTERS
 const ASSETS = {
   backgrounds: {
     world: "images/bg/world_map.jpg",
@@ -51,6 +87,7 @@ const ASSETS = {
 
 export const scenario = [
   {
+    id: "1",
     chapter: "世界設定",
     time: "――",
     background: ASSETS.backgrounds.world,
@@ -58,6 +95,7 @@ export const scenario = [
     text: "この世界の地球――一次球は、太陽系のような単純な回転軌道を持たない。メビウスの輪を思わせる特殊な回転軸によって運行している。"
   },
   {
+    id: "2",
     chapter: "世界設定",
     time: "――",
     background: ASSETS.backgrounds.world,
@@ -65,6 +103,7 @@ export const scenario = [
     text: "そのメビウス構造の中心部には、非現実的なほど長い寿命を持つマグネターが存在する。そして一次球の近くを周期する、もう一つの地球がある。"
   },
   {
+    id: "3",
     chapter: "世界設定",
     time: "――",
     background: ASSETS.backgrounds.world,
@@ -72,6 +111,7 @@ export const scenario = [
     text: "もう一つの地球は『似成球（にせいきゅう）』と呼ばれている。一次球と似た環境を持ちながら、そこには顔や瞳に謎の模様を浮かべる住人――エレメンターが存在する。"
   },
   {
+    id: "4",
     chapter: "世界設定",
     time: "――",
     background: ASSETS.backgrounds.world,
@@ -79,6 +119,7 @@ export const scenario = [
     text: "一次球の人間には見えない魂。しかしエレメンターは魂を具現化し、それを質量として扱うことができる。模様の違いは、彼らが持つさまざまな力――『エレメント』の違いを示している。"
   },
   {
+    id: "5",
     chapter: "第一章　夏期休暇二日前",
     time: "07:10",
     background: ASSETS.backgrounds.academy,
@@ -86,6 +127,7 @@ export const scenario = [
     text: "マルケサス（ムー大陸）。超難関校、UN・リスクトリア・アカデミー。高部二年生のリース・レイデンは、いつもの朝を迎えていた。"
   },
   {
+    id: "6",
     chapter: "第一章　夏期休暇二日前",
     time: "07:12",
     background: ASSETS.backgrounds.academy,
@@ -96,6 +138,7 @@ export const scenario = [
     ]
   },
   {
+    id: "7",
     chapter: "第一章　夏期休暇二日前",
     time: "07:15",
     background: ASSETS.backgrounds.news,
@@ -103,6 +146,7 @@ export const scenario = [
     text: "続いて臨時ニュースです。西マルケサス上空から、形状が異常に整った物体が落下しました。専門家は、似成球由来の人工衛星である可能性を指摘しています。"
   },
   {
+    id: "8",
     chapter: "第一章　夏期休暇二日前",
     time: "07:16",
     background: ASSETS.backgrounds.news,
@@ -113,6 +157,7 @@ export const scenario = [
     ]
   },
   {
+    id: "9",
     chapter: "第一章　夏期休暇前日",
     time: "19:31",
     background: ASSETS.backgrounds.street,
@@ -123,6 +168,7 @@ export const scenario = [
     ]
   },
   {
+    id: "10",
     chapter: "第一章　夏期休暇前日",
     time: "19:34",
     background: ASSETS.backgrounds.street,
@@ -133,6 +179,7 @@ export const scenario = [
     ]
   },
   {
+    id: "11",
     chapter: "第一章　夏期休暇前日",
     time: "19:34",
     background: ASSETS.backgrounds.street,
@@ -143,6 +190,7 @@ export const scenario = [
     ]
   },
   {
+    id: "12",
     chapter: "第一章　夏期休暇前日",
     time: "19:35",
     background: ASSETS.backgrounds.street,
@@ -153,6 +201,7 @@ export const scenario = [
     ]
   },
   {
+    id: "13",
     chapter: "第一章　夏期休暇前日",
     time: "19:35",
     background: ASSETS.backgrounds.street,
@@ -160,6 +209,7 @@ export const scenario = [
     text: "幼い頃から異常なほど運動能力に恵まれていたリースは、とっさに受け身を取り、大きな怪我を免れた。しかしダメージは重い。"
   },
   {
+    id: "14",
     chapter: "第一章　夏期休暇前日",
     time: "19:36",
     background: ASSETS.backgrounds.street,
@@ -170,6 +220,7 @@ export const scenario = [
     ]
   },
   {
+    id: "15",
     chapter: "第一章　夏期休暇前日",
     time: "19:36",
     background: ASSETS.backgrounds.street,
@@ -180,6 +231,7 @@ export const scenario = [
     ]
   },
   {
+    id: "16",
     chapter: "第一章　夏期休暇前日",
     time: "19:37",
     background: ASSETS.backgrounds.street,
@@ -187,6 +239,7 @@ export const scenario = [
     text: "衛星科で習った似成球の知識が、頭の中を駆け巡る。先日の人工衛星らしき落下物。もし、そこからこの存在が出てきたのだとしたら――。"
   },
   {
+    id: "17",
     chapter: "第一章　夏期休暇前日",
     time: "19:37",
     background: ASSETS.backgrounds.street,
@@ -194,6 +247,7 @@ export const scenario = [
     text: "敵のエレメントは『慧眼』。魂の形を見て対象を一つに絞り、その存在を見通す力。隠れることはできない。体勢、体温、表情まで把握される。"
   },
   {
+    id: "18",
     chapter: "第一章　夏期休暇前日",
     time: "19:38",
     background: ASSETS.backgrounds.street,
@@ -204,6 +258,7 @@ export const scenario = [
     ]
   },
   {
+    id: "19",
     chapter: "第一章　夏期休暇前日",
     time: "19:39",
     background: ASSETS.backgrounds.street,
@@ -211,6 +266,7 @@ export const scenario = [
     text: "しかし、逃走はあっけなく終わった。リースは捕らえられ、死の気配がすぐそこまで迫る。"
   },
   {
+    id: "20",
     chapter: "第一章　夏期休暇前日",
     time: "19:39",
     background: ASSETS.backgrounds.street,
@@ -221,6 +277,7 @@ export const scenario = [
     ]
   },
   {
+    id: "21",
     chapter: "第一章　夏期休暇前日",
     time: "19:39",
     background: ASSETS.backgrounds.street,
@@ -228,6 +285,7 @@ export const scenario = [
     text: "リースの手にあったのは、常備していた懐中電灯。帰路が暗いことを知っていたから持ち歩いていたものだ。"
   },
   {
+    id: "22",
     chapter: "第一章　夏期休暇前日",
     time: "19:39",
     background: ASSETS.backgrounds.street,
@@ -235,6 +293,7 @@ export const scenario = [
     text: "偶然にも強い光がエレメンターの右目を直撃する。"
   },
   {
+    id: "23",
     chapter: "第一章　夏期休暇前日",
     time: "19:39",
     background: ASSETS.backgrounds.street,
@@ -245,6 +304,7 @@ export const scenario = [
     ]
   },
   {
+    id: "24",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.street,
@@ -255,6 +315,7 @@ export const scenario = [
     ]
   },
   {
+    id: "25",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.street,
@@ -265,6 +326,7 @@ export const scenario = [
     ]
   },
   {
+    id: "26",
     chapter: "第一章　夏期休暇前日",
     time: "――",
     background: ASSETS.backgrounds.memory,
@@ -272,6 +334,7 @@ export const scenario = [
     text: "リース。もし、とんでもない危機が来たらね。いいおまじないがあるの。"
   },
   {
+    id: "27",
     chapter: "第一章　夏期休暇前日",
     time: "――",
     background: ASSETS.backgrounds.memory,
@@ -279,6 +342,7 @@ export const scenario = [
     text: "『インペリー・オン』。頭の片隅に、ちゃんとしまっておくのよ。"
   },
   {
+    id: "28",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.awakening,
@@ -289,6 +353,7 @@ export const scenario = [
     ]
   },
   {
+    id: "29",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.awakening,
@@ -296,6 +361,7 @@ export const scenario = [
     text: "強く願った。助かりたい。生きたい。エマを残して、こんなところで終わりたくない。"
   },
   {
+    id: "30",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.awakening,
@@ -303,6 +369,7 @@ export const scenario = [
     text: "その瞬間、リースの肩にエレメンターとよく似た紋様が浮かび上がった。そして瞳には、十字の模様が刻まれる。"
   },
   {
+    id: "31",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.awakening,
@@ -313,6 +380,7 @@ export const scenario = [
     ]
   },
   {
+    id: "32",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.battle,
@@ -320,6 +388,7 @@ export const scenario = [
     text: "リースは悟った。今なら、反撃できる。"
   },
   {
+    id: "33",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.battle,
@@ -330,6 +399,7 @@ export const scenario = [
     ]
   },
   {
+    id: "34",
     chapter: "第一章　夏期休暇前日",
     time: "19:40",
     background: ASSETS.backgrounds.battle,
@@ -337,6 +407,7 @@ export const scenario = [
     text: "次の瞬間、リースはエレメンターへ突進した。その速度は、F1カーの速度を優に超えていた――。"
   },
   {
+    id: "35",
     chapter: "第一章　夏期休暇前日",
     time: "19:41",
     background: ASSETS.backgrounds.battle,
@@ -347,6 +418,7 @@ export const scenario = [
     ]
   },
   {
+    id: "36",
     chapter: "第一章　夏期休暇前日",
     time: "19:43",
     background: ASSETS.backgrounds.street,
@@ -357,6 +429,7 @@ export const scenario = [
     ]
   },
   {
+    id: "37",
     chapter: "第一章　夏期休暇前日",
     time: "20:02",
     background: ASSETS.backgrounds.home,
@@ -368,6 +441,7 @@ export const scenario = [
     ]
   },
   {
+    id: "38",
     chapter: "第一章　夏期休暇前日",
     time: "20:03",
     background: ASSETS.backgrounds.home,
@@ -378,6 +452,7 @@ export const scenario = [
     ]
   },
   {
+    id: "39",
     chapter: "第一章　夏期休暇前日",
     time: "22:31",
     background: ASSETS.backgrounds.room,
@@ -389,6 +464,7 @@ export const scenario = [
     ]
   },
   {
+    id: "40",
     chapter: "第一章　夏期休暇前日",
     time: "22:32",
     background: ASSETS.backgrounds.room,
@@ -399,6 +475,7 @@ export const scenario = [
     ]
   },
   {
+    id: "41",
     chapter: "第一章　夏期休暇前日",
     time: "22:33",
     background: ASSETS.backgrounds.room,
@@ -408,20 +485,21 @@ export const scenario = [
 
   // ── 分岐ポイント ──────────────────────────────────────────
   {
+    id: "42",
     chapter: "第一章　夏期休暇前日",
     time: "22:40",
     background: ASSETS.backgrounds.room,
     speaker: "ナレーション",
     text: "ベッドに入ったリースは、明かりを消すかどうか少し迷った。今日はいろいろありすぎた。まだ気持ちが落ち着かない。",
-    choices: [
-      { label: "電気を消して眠る", next: "end-daily-1" },
-      { label: "電気はつけたままにしておく", next: "ch2-start" }
+    cmd: [
+      'Choose ("電気を消して眠る",42a or "電気はつけたままにしておく",43)'
     ]
   },
 
   // ── 日常エンド ────────────────────────────────────────────
   {
-    id: "end-daily-1",
+    id: "42a",
+    alias: "end-daily-1",
     chapter: "第一章　夏期休暇前日",
     time: "22:41",
     background: ASSETS.backgrounds.room,
@@ -432,6 +510,7 @@ export const scenario = [
     ]
   },
   {
+    id: "42a2",
     chapter: "第一章　夏期休暇前日",
     time: "22:42",
     background: ASSETS.backgrounds.room,
@@ -439,6 +518,7 @@ export const scenario = [
     text: "電気を消すと、部屋はすぐに静けさに包まれた。今日という日の出来事は、まるで夢だったかのように、静かに眠りの中へ溶けていく。"
   },
   {
+    id: "42a3",
     ending: true,
     chapter: "日常エンド",
     time: "――",
@@ -449,7 +529,8 @@ export const scenario = [
 
   // ── 第二章　姉弟の対面 ───────────────────────────────────
   {
-    id: "ch2-start",
+    id: "43",
+    alias: "ch2-start",
     chapter: "第二章　姉弟の対面",
     time: "03:00",
     background: ASSETS.backgrounds.room,
@@ -460,6 +541,7 @@ export const scenario = [
     ]
   },
   {
+    id: "44",
     chapter: "第二章　姉弟の対面",
     time: "03:01",
     background: ASSETS.backgrounds.room,
@@ -467,6 +549,7 @@ export const scenario = [
     text: "メビウス状の回転軸を持つこの星では、この時刻でもすでに日が上っている。だが、そんなことはどうでもよかった。"
   },
   {
+    id: "45",
     chapter: "第二章　姉弟の対面",
     time: "03:02",
     background: ASSETS.backgrounds.room,
@@ -477,6 +560,7 @@ export const scenario = [
     ]
   },
   {
+    id: "46",
     chapter: "第二章　姉弟の対面",
     time: "03:02",
     background: ASSETS.backgrounds.room,
@@ -487,6 +571,7 @@ export const scenario = [
     ]
   },
   {
+    id: "47",
     chapter: "第二章　姉弟の対面",
     time: "03:03",
     background: ASSETS.backgrounds.room,
@@ -494,6 +579,7 @@ export const scenario = [
     text: "飛び起きた。だが、これは夢ではない。何より、彼女からは昨日戦ったエレメンターと同じ気配がする。"
   },
   {
+    id: "48",
     chapter: "第二章　姉弟の対面",
     time: "03:04",
     background: ASSETS.backgrounds.awakening,
@@ -504,6 +590,7 @@ export const scenario = [
     ]
   },
   {
+    id: "49",
     chapter: "第二章　姉弟の対面",
     time: "03:04",
     background: ASSETS.backgrounds.awakening,
@@ -514,6 +601,7 @@ export const scenario = [
     ]
   },
   {
+    id: "50",
     chapter: "第二章　姉弟の対面",
     time: "03:04",
     background: ASSETS.backgrounds.awakening,
@@ -521,6 +609,7 @@ export const scenario = [
     text: "バラを思わせる模様が顎から鎖骨にかけて浮かび上がり、左目には五芒星の紋様が刻まれる。"
   },
   {
+    id: "51",
     chapter: "第二章　姉弟の対面",
     time: "03:05",
     background: ASSETS.backgrounds.awakening,
@@ -528,6 +617,7 @@ export const scenario = [
     text: "アガルタ――あなたたちが似成球と呼ぶ星にある、とある国の第二皇女。アーグリヌ・ペトゥシュワ・ドルハダス。愛称でアリーと呼んで。"
   },
   {
+    id: "52",
     chapter: "第二章　姉弟の対面",
     time: "03:12",
     background: ASSETS.backgrounds.room,
@@ -535,6 +625,7 @@ export const scenario = [
     text: "ええ。私の理解が正しければ――あなたは、私の弟ということになるわね。"
   },
   {
+    id: "53",
     chapter: "第二章　姉弟の対面",
     time: "03:13",
     background: ASSETS.backgrounds.room,
@@ -545,6 +636,7 @@ export const scenario = [
     ]
   },
   {
+    id: "54",
     chapter: "第二章　姉弟の対面",
     time: "03:15",
     background: ASSETS.backgrounds.room,
@@ -557,6 +649,7 @@ export const scenario = [
     ]
   },
   {
+    id: "55",
     chapter: "第二章　姉弟の対面",
     time: "03:15",
     background: ASSETS.backgrounds.room,
@@ -567,6 +660,7 @@ export const scenario = [
     ]
   },
   {
+    id: "56",
     chapter: "第二章　姉弟の対面",
     time: "03:16",
     background: ASSETS.backgrounds.room,
@@ -578,6 +672,7 @@ export const scenario = [
     ]
   },
   {
+    id: "57",
     chapter: "第二章　姉弟の対面",
     time: "03:28",
     background: ASSETS.backgrounds.room,
@@ -587,7 +682,8 @@ export const scenario = [
 
   // ── 第二章　続き：渡航準備 ───────────────────────────────────
   {
-    id: "ch2-lab",
+    id: "58",
+    alias: "ch2-lab",
     chapter: "第二章　渡航準備",
     time: "09:00",
     background: ASSETS.backgrounds.lab,
@@ -600,6 +696,7 @@ export const scenario = [
     ]
   },
   {
+    id: "59",
     chapter: "第二章　渡航準備",
     time: "09:07",
     background: ASSETS.backgrounds.lab,
@@ -610,6 +707,7 @@ export const scenario = [
     ]
   },
   {
+    id: "60",
     chapter: "第二章　渡航準備",
     time: "15:10",
     background: ASSETS.backgrounds.airport,
@@ -621,6 +719,7 @@ export const scenario = [
     ]
   },
   {
+    id: "61",
     chapter: "第二章　渡航準備",
     time: "15:11",
     background: ASSETS.backgrounds.airport,
@@ -631,6 +730,7 @@ export const scenario = [
     ]
   },
   {
+    id: "62",
     chapter: "第二章　渡航準備",
     time: "15:11",
     background: ASSETS.backgrounds.airport,
@@ -641,6 +741,7 @@ export const scenario = [
     ]
   },
   {
+    id: "63",
     chapter: "第二章　渡航準備",
     time: "15:12",
     background: ASSETS.backgrounds.airport,
@@ -651,6 +752,7 @@ export const scenario = [
     ]
   },
   {
+    id: "64",
     chapter: "第二章　渡航準備",
     time: "15:13",
     background: ASSETS.backgrounds.airport,
@@ -658,6 +760,7 @@ export const scenario = [
     text: "そういう問題じゃ、ないのだけれど……。まあ、いいわ。可愛い弟の頼みだもの。"
   },
   {
+    id: "65",
     chapter: "第二章　渡航準備",
     time: "15:14",
     background: ASSETS.backgrounds.airport,
@@ -668,6 +771,7 @@ export const scenario = [
     ]
   },
   {
+    id: "66",
     chapter: "第二章　渡航準備",
     time: "15:14",
     background: ASSETS.backgrounds.airport,
@@ -675,6 +779,7 @@ export const scenario = [
     text: "……もし変な人に中を覗かれたら、承知しないんだから。"
   },
   {
+    id: "67",
     chapter: "第二章　渡航準備",
     time: "15:15",
     background: ASSETS.backgrounds.airport,
@@ -685,6 +790,7 @@ export const scenario = [
     ]
   },
   {
+    id: "68",
     chapter: "第二章　渡航準備",
     time: "15:25",
     background: ASSETS.backgrounds.airport,
@@ -695,6 +801,7 @@ export const scenario = [
     ]
   },
   {
+    id: "69",
     chapter: "第二章　渡航準備",
     time: "15:35",
     background: ASSETS.backgrounds.airport,
@@ -702,6 +809,7 @@ export const scenario = [
     text: "手荷物カウンターでのチェックインは、拍子抜けするほどあっさり終わった。だが問題はこの先――大型の荷物は、例外なくX線検査の対象になるという。"
   },
   {
+    id: "70",
     chapter: "第二章　渡航準備",
     time: "15:39",
     background: ASSETS.backgrounds.airport,
@@ -712,6 +820,7 @@ export const scenario = [
     ]
   },
   {
+    id: "71",
     chapter: "第二章　渡航準備",
     time: "15:45",
     background: ASSETS.backgrounds.airport,
@@ -719,6 +828,7 @@ export const scenario = [
     text: "手荷物検査室。ベルトコンベアに乗せられたトランクが、ゆっくりとX線装置の中へ吸い込まれていく。"
   },
   {
+    id: "72",
     chapter: "第二章　渡航準備",
     time: "15:46",
     background: ASSETS.backgrounds.airport,
@@ -727,16 +837,15 @@ export const scenario = [
     sprites: [
       { id: "reese", image: ASSETS.sprites.reese_surprised, action: "update", effect: "shake" }
     ],
-    choices: [
-      { label: "市場で買った記念品の庭石だよ", next: "airport-success" },
-      { label: "最新式の超重量ポータブル蓄電池だよ", next: "end-detained-battery" },
-      { label: "実は, 家出した妹が中に入ってて……", next: "end-detained-sister" }
+    cmd: [
+      'Choose ("市場で買った記念品の庭石だよ",73 or "最新式の超重量ポータブル蓄電池だよ",72a or "実は, 家出した妹が中に入ってて……",72b)'
     ]
   },
 
   // ── 連行エンド A（失敗） ──────────────────────────────
   {
-    id: "end-detained-battery",
+    id: "72a",
+    alias: "end-detained-battery",
     chapter: "第二章　渡航準備",
     time: "15:47",
     background: ASSETS.backgrounds.airport,
@@ -748,6 +857,7 @@ export const scenario = [
     ]
   },
   {
+    id: "72a2",
     ending: true,
     chapter: "連行エンド",
     time: "――",
@@ -758,7 +868,8 @@ export const scenario = [
 
   // ── 連行エンド B（失敗） ──────────────────────────────
   {
-    id: "end-detained-sister",
+    id: "72b",
+    alias: "end-detained-sister",
     chapter: "第二章　渡航準備",
     time: "15:47",
     background: ASSETS.backgrounds.airport,
@@ -770,6 +881,7 @@ export const scenario = [
     ]
   },
   {
+    id: "72b2",
     ending: true,
     chapter: "連行エンド",
     time: "――",
@@ -780,7 +892,8 @@ export const scenario = [
 
   // ── 成功（物語継続） ────────────────────────────────
   {
-    id: "airport-success",
+    id: "73",
+    alias: "airport-success",
     chapter: "第二章　渡航準備",
     time: "15:51",
     background: ASSETS.backgrounds.airport,
@@ -792,6 +905,7 @@ export const scenario = [
     ]
   },
   {
+    id: "74",
     chapter: "第二章　渡航準備",
     time: "19:00",
     background: ASSETS.backgrounds.airplane,
@@ -805,6 +919,7 @@ export const scenario = [
 
   // ── MONA到着 ──
   {
+    id: "75",
     chapter: "第二章　渡航準備",
     time: "08:31",
     background: ASSETS.backgrounds.mona_street,
@@ -816,6 +931,7 @@ export const scenario = [
     ]
   },
   {
+    id: "76",
     chapter: "第二章　渡航準備",
     time: "10:05",
     background: ASSETS.backgrounds.mona_street,
@@ -827,6 +943,7 @@ export const scenario = [
     ]
   },
   {
+    id: "77",
     chapter: "第二章　渡航準備",
     time: "10:07",
     background: ASSETS.backgrounds.mona_street,
@@ -838,6 +955,7 @@ export const scenario = [
     ]
   },
   {
+    id: "78",
     chapter: "第二章　渡航準備",
     time: "10:08",
     background: ASSETS.backgrounds.mona_street,
@@ -852,6 +970,7 @@ export const scenario = [
   // ── 第三章 ──
   // ── 第三章　潜入作戦 ──
   {
+    id: "79",
     chapter: "第三章　潜入作戦",
     time: "13:00",
     background: ASSETS.backgrounds.manna_entrance,
@@ -859,6 +978,7 @@ export const scenario = [
     text: "二人はついに、ロケットを保有する超巨大企業『MANNA（マナ）』の本社ビル前へと辿り着いた。入り口には屈強な警備員が数名、目を光らせている。"
   },
   {
+    id: "80",
     chapter: "第三章　潜入作戦",
     time: "13:02",
     background: ASSETS.backgrounds.manna_entrance,
@@ -869,6 +989,7 @@ export const scenario = [
     ]
   },
   {
+    id: "81",
     chapter: "第三章　潜入作戦",
     time: "13:03",
     background: ASSETS.backgrounds.manna_entrance,
@@ -879,6 +1000,7 @@ export const scenario = [
     ]
   },
   {
+    id: "82",
     chapter: "第三章　潜入作戦",
     time: "13:04",
     background: ASSETS.backgrounds.manna_entrance,
@@ -889,6 +1011,7 @@ export const scenario = [
     ]
   },
   {
+    id: "83",
     chapter: "第三章　潜入作戦",
     time: "13:04",
     background: ASSETS.backgrounds.manna_entrance,
@@ -899,6 +1022,7 @@ export const scenario = [
     ]
   },
   {
+    id: "84",
     chapter: "第三章　潜入作戦",
     time: "13:05",
     background: ASSETS.backgrounds.manna_entrance,
@@ -910,6 +1034,7 @@ export const scenario = [
     ]
   },
   {
+    id: "85",
     chapter: "第三章　潜入作戦",
     time: "13:06",
     background: ASSETS.backgrounds.manna_entrance,
@@ -923,6 +1048,7 @@ export const scenario = [
     ]
   },
   {
+    id: "86",
     chapter: "第三章　潜入作戦",
     time: "13:15",
     background: ASSETS.backgrounds.manna_backyard,
@@ -930,6 +1056,7 @@ export const scenario = [
     text: "裏手に回ると、使われていなさそうな非常用の梯子を見つけた。人目がないのを確かめ、二人は足音を殺しながらそれを登っていく。"
   },
   {
+    id: "87",
     chapter: "第三章　潜入作戦",
     time: "13:20",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -941,6 +1068,7 @@ export const scenario = [
     ]
   },
   {
+    id: "88",
     chapter: "第三章　潜入作戦",
     time: "13:22",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -948,6 +1076,7 @@ export const scenario = [
     text: "なら、私のエレメントの出番ね。……あまり見せたくはないのだけれど。"
   },
   {
+    id: "89",
     chapter: "第三章　潜入作戦",
     time: "13:23",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -958,6 +1087,7 @@ export const scenario = [
     ]
   },
   {
+    id: "90",
     chapter: "第三章　潜入作戦",
     time: "13:24",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -969,6 +1099,7 @@ export const scenario = [
   },
 
   {
+    id: "91",
     chapter: "第三章　潜入作戦",
     time: "13:26",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -976,6 +1107,7 @@ export const scenario = [
     text: "見下ろすと、非常口のすぐそばで、社員証を首から下げた技術者らしき男が一人、警備端末をいじっているのが見えた。"
   },
   {
+    id: "92",
     chapter: "第三章　潜入作戦",
     time: "13:27",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -986,6 +1118,7 @@ export const scenario = [
     ]
   },
   {
+    id: "93",
     chapter: "第三章　潜入作戦",
     time: "13:27",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -996,6 +1129,7 @@ export const scenario = [
     ]
   },
   {
+    id: "94",
     chapter: "第三章　潜入作戦",
     time: "13:28",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1003,6 +1137,7 @@ export const scenario = [
     text: "効果範囲が狭いというアリーの言葉を思い出し、二人は梯子を静かに降り、物陰伝いに男との距離を詰めた。"
   },
   {
+    id: "95",
     chapter: "第三章　潜入作戦",
     time: "13:29",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1010,6 +1145,7 @@ export const scenario = [
     text: "アリーは息を潜め、じっと男を見つめ始めた。左目の五芒星の紋様が、ゆっくりと熱を帯びていく。"
   },
   {
+    id: "96",
     chapter: "第三章　潜入作戦",
     time: "13:29",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1017,19 +1153,20 @@ export const scenario = [
     text: "……5秒。男はまだ何も気づいていない。"
   },
   {
+    id: "97",
     chapter: "第三章　潜入作戦",
     time: "13:29",
     background: ASSETS.backgrounds.manna_scaffold,
     speaker: "ナレーション",
     text: "……15秒。ふと、男が顔を上げかけた。視線が、こちらへ向かおうとしている。",
-    choices: [
-      { label: "リースが物音を立てて気を逸らす", next: "elem-noise" },
-      { label: "アリーの集中を信じて動かない", next: "elem-still" }
+    cmd: [
+      'Choose ("リースが物音を立てて気を逸らす",97a or "アリーの集中を信じて動かない",97b)'
     ]
   },
 
   {
-    id: "elem-noise",
+    id: "97a",
+    alias: "elem-noise",
     chapter: "第三章　潜入作戦",
     time: "13:30",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1040,18 +1177,20 @@ export const scenario = [
     ]
   },
   {
+    id: "97a2",
     chapter: "第三章　潜入作戦",
     time: "13:31",
     background: ASSETS.backgrounds.manna_scaffold,
     speaker: "ナレーション",
     text: "男は「……猫か？」とつぶやき、音のした方へ視線を移す。アリーへの注意は、それきり逸れていった。",
-    choices: [
-      { label: "（続ける）", next: "elem-resolve" }
+    cmd: [
+      'Choose ("（続ける）",98)'
     ]
   },
 
   {
-    id: "elem-still",
+    id: "97b",
+    alias: "elem-still",
     chapter: "第三章　潜入作戦",
     time: "13:30",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1062,6 +1201,7 @@ export const scenario = [
     ]
   },
   {
+    id: "97b2",
     chapter: "第三章　潜入作戦",
     time: "13:31",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1070,7 +1210,8 @@ export const scenario = [
   },
 
   {
-    id: "elem-resolve",
+    id: "98",
+    alias: "elem-resolve",
     chapter: "第三章　潜入作戦",
     time: "13:32",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1078,6 +1219,7 @@ export const scenario = [
     text: "……30秒。男の瞳から、ふっと光が消えた。焦点の合わない、ぼんやりとした表情に変わる。"
   },
   {
+    id: "99",
     chapter: "第三章　潜入作戦",
     time: "13:32",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1088,6 +1230,7 @@ export const scenario = [
     ]
   },
   {
+    id: "100",
     chapter: "第三章　潜入作戦",
     time: "13:33",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1095,6 +1238,7 @@ export const scenario = [
     text: "――その端末の鍵を開けて、少しの間、目を離しなさい。"
   },
   {
+    id: "101",
     chapter: "第三章　潜入作戦",
     time: "13:33",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1102,6 +1246,7 @@ export const scenario = [
     text: "男は虚ろな表情のまま小さく頷くと、端末を操作して扉を開け放ち、ふらふらとその場を離れていった。"
   },
   {
+    id: "102",
     chapter: "第三章　潜入作戦",
     time: "13:34",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1112,6 +1257,7 @@ export const scenario = [
     ]
   },
   {
+    id: "103",
     chapter: "第三章　潜入作戦",
     time: "13:34",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1122,6 +1268,7 @@ export const scenario = [
     ]
   },
   {
+    id: "104",
     chapter: "第三章　潜入作戦",
     time: "13:36",
     background: ASSETS.backgrounds.manna_scaffold,
@@ -1130,6 +1277,7 @@ export const scenario = [
   },
 
   {
+    id: "105",
     chapter: "第三章　潜入作戦",
     time: "13:40",
     background: ASSETS.backgrounds.ceo_office,
@@ -1141,6 +1289,7 @@ export const scenario = [
     ]
   },
   {
+    id: "106",
     chapter: "第三章　潜入作戦",
     time: "13:42",
     background: ASSETS.backgrounds.ceo_office,
@@ -1152,6 +1301,7 @@ export const scenario = [
     ]
   },
   {
+    id: "107",
     chapter: "第三章　潜入作戦",
     time: "13:51",
     background: ASSETS.backgrounds.ceo_office,
@@ -1163,3 +1313,15 @@ export const scenario = [
     ]
   }
 ];
+
+/* ----------------------------------------------------------------------------
+ * CHARACTERS / BACKGROUNDS
+ *   Character コマンドで "reese_angry" のようなキー名から画像を引けるように、
+ *   素材表をシナリオ本体に添えておく（新規ファイルを作らないため）。
+ *   例) Character Change:reese:reese_angry
+ * -------------------------------------------------------------------------- */
+scenario.characters = ASSETS.sprites;
+scenario.backgrounds = ASSETS.backgrounds;
+
+export const CHARACTERS = ASSETS.sprites;
+export const BACKGROUNDS = ASSETS.backgrounds;
